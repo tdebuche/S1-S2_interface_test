@@ -1,5 +1,4 @@
 import numpy as np
-import awkward as ak
 from data_handle.tools import getuvsector
 from collections import defaultdict
 
