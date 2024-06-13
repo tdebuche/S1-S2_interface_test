@@ -41,5 +41,5 @@ def provide_unselected_ts(event):
                 if not nb_selected_TCs[module]:
                     print(sector, event.ds_si.good_tc_layer[module_idx][0],u,v) #see the differences in geometries
          
-        return(unselected_ts)
+    return(unselected_ts)
         
