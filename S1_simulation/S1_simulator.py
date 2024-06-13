@@ -1,6 +1,6 @@
 import numpy as np
-from S1_Simulation.TCs_to_pTTs import add_TCs
-from S1_Simulation.TS_to_pTTs import build_pTTsCEE,build_pTTsCEH
+from S1_simulation.TCs_to_pTTs import add_TCs
+from S1_simulation.TS_to_pTTs import build_pTTsCEE,build_pTTsCEH
 from ECONT.read_nb_selected_TCs import get
 from collections import defaultdict
 
