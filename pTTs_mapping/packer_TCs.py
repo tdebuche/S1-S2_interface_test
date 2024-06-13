@@ -26,7 +26,7 @@ def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
         value_phi = int((mod_phi[tc_idx]-event.offset_phi)/event.LSB_phi) & 0xFFF # 12 bits
         data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ code_energy, value_r_z, value_phi]
  
-def _process_event(event, args,xml,xml_MB):
+def _process_data_TCs(event, args,xml,xml_MB):
     data_TCs = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
         layer = event.ds_si.good_tc_layer[module_idx][0]
@@ -47,9 +47,9 @@ def _process_event(event, args,xml,xml_MB):
 
 
     
-def _data_packer(event, args):
+def _TCs_packer(event, args):
     xml = geometry.read_xml()
     xml_MB = geometry.MB_geometry()
-    data_TCs = _process_event(event,args,xml,xml_MB)
-    event.data_packer = data_TCs
+    data_TCs = _process_data_TCs(event,args,xml,xml_MB)
+    event.TCs_packer = data_TCs
 
