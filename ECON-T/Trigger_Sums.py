@@ -8,14 +8,14 @@ import nb_selected_TCs
 self
 def provide_ts(event):
     ts = defaultdict(list)
-    for module_idx in range(len(self.ds_si.good_tc_layer)):
+    for module_idx in range(len(event.ds_si.good_tc_layer)):
         if u != -999:
             layer = event.ds_si.good_tc_layer[module_idx][0],
             u,v,sector = getuvsector(layer,
                                      event.ds_si.good_tc_waferu[module_idx][0],
                                      event.ds_si.good_tc_waferv[module_idx][0])
-            module = self.get_module_id(layer,sector,u,v)
-            if self.ds_si.good_tc_layer[module_idx][0] < 48:   #change to 27 when STCs
+            module = get_module_id(layer,sector,u,v)
+            if event.ds_si.good_tc_layer[module_idx][0] < 48:   #change to 27 when STCs
                 if ts[module] == []:
                     ts[module].append(0)
                 for idx in range(len(event.ds_si.good_tc_layer[module_idx])):
@@ -28,11 +28,11 @@ def provide_unselected_ts(event):
     unselected_ts = defaultdict(list)
     for module_idx in range(len(self.ds_si.good_tc_layer)):
         if u != -999:
-            layer = self.ds_si.good_tc_layer[module_idx][0]
+            layer = event.ds_si.good_tc_layer[module_idx][0]
             u,v,sector = getuvsector(layer,
                                         event.ds_si.good_tc_waferu[module_idx][0],
                                         event.ds_si.good_tc_waferv[module_idx][0])
-            module = self.get_module_id(sector,layer,u,v)
+            module = get_module_id(sector,layer,u,v)
             if layer < 48:  #change to 27 when STCs
                 if ts[module] == []:
                     ts[module].append(0)
