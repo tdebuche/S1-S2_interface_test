@@ -7,7 +7,7 @@ import os
 import argparse
 import numpy as np
 
-from data_handle.event_pTT import provide_events
+from data_handle.event import provide_events
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
