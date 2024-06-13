@@ -34,13 +34,13 @@ def createplot(args,event,energies,BinXY,title):
             X.append(BinXY[eta][phi][0][0])
             Y.append(BinXY[eta][phi][1][0])
             if energies[eta][phi] != 100000:
-                weights.append(energies[eta][phi])
+                weights.append(energies[eta][phi]+1)
                 if  energies[eta][phi] > weightmax:
                     weightmax = energies[eta][phi]
                     etamax = eta
                     phimax = phi
             else : 
-                weights.append(0)
+                weights.append(1)
             pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     if weightmax == 0: weightmax = 1
@@ -52,7 +52,7 @@ def createplot(args,event,energies,BinXY,title):
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res]+1)/np.log(max(5,weightmax))))
+            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res])/np.log(max(5,weightmax))))
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
