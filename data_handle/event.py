@@ -5,7 +5,7 @@ import uproot
 import math
 import yaml
 from data_handle.tools import compress_value, printProgressBar, getuvsector
-from ECONT.Trigger_Sums import provide_ts, provide_unseleceted_ts
+from ECONT.Trigger_Sums import provide_ts, provide_unselected_ts
 
 class EventData():
     def __init__(self, ds_si, ds_sci, gen):
