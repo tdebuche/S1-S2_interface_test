@@ -13,7 +13,7 @@ def fill_links(pTTs,links,xml):
             if links[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
                 links[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTs[pTT_idx]['energy'])
             else: print('error link is already filled')
-        else : print('error pTT has no allocation')
+        #else : print('error pTT has no allocation')
             
 
 def _process_pTT_data(event,args,xml_allocation,xml_duplication):
@@ -24,8 +24,8 @@ def _process_pTT_data(event,args,xml_allocation,xml_duplication):
     fill_links(event.ds_pTTsdupCEE,data_pTTs,xml_duplication)
 
     #fill CEH links
-    fill_links(event.ds_pTTsCEE,data_pTTs,xml_allocation)
-    fill_links(event.ds_pTTsdupCEE,data_pTTs,xml_duplication)
+    fill_links(event.ds_pTTsCEH,data_pTTs,xml_allocation)
+    fill_links(event.ds_pTTsdupCEH,data_pTTs,xml_duplication)
     
     return data_pTTs
 
