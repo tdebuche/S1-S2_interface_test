@@ -5,10 +5,10 @@ def get_pTT_id(Sector, S1Board, CEECEH, eta,phi):
     return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
     
 
-def get_module_id(self,Sector, plane, u, v):
-    return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
+def get_module_id(Sector, layer, u, v):
+    return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((layer & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
 
-def get_MB_id(self, plane, v, MB):
+def get_MB_id(plane, v, MB):
     return MB[int(plane)][int(v)]
 
 
