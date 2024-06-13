@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from link_unpacking.unpack_links import create_energies
-from link_unpacking.read_files import read_xml_plot
+from link_unpacking.unpack_links import read_xml_plot
 
 
 
