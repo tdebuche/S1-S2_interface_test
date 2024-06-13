@@ -27,12 +27,7 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
     return pTTs
 
 
-def get_pTT_id(Sector, S1Board, CEECEH, eta,phi):
-    pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-    return pTT_id
 
-def get_module_id(Sector, plane, u, v):
-    return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
 
 def getetaphi(phi,roverz):
     teta = np.arctan(roverz)
