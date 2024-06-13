@@ -8,7 +8,7 @@ import argparse
 import numpy as np
 
 from data_handle.event import provide_events
-
+from S1_simulation.S1_simulator import create_pTTs
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
 parser.add_argument('--particles', type=str, default='photons', help='Choose the particle sample')
@@ -32,6 +32,10 @@ for idx, event in enumerate(events):
   #print(event.data_packer)
   print(event.ds_ts)
   print(event.ds_unselected_ts )
+  create_pTTs(event,args,0)
+  create_pTTs(event,args,1)
+  print(event.ds_pTTsCEE)
+  print(event.ds_pTTsCEH)
   #print(event.data_packer)
   #print(event.phi_gen)
   #print(event.eta_gen)
