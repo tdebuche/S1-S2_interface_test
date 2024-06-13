@@ -1,7 +1,7 @@
 from collections import defaultdict
 import numpy as np
 import math
-from pTTs_mapping.read_files import read_allocation_pTTs
+from link_packing.read_files import read_allocation_pTTs
 
 
 
