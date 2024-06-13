@@ -1,7 +1,6 @@
 from collections import defaultdict
 import numpy as np
 import math
-from data_handle.tools import getuvsector,get_module_id,get_pTT_id
 from pTTs_mapping.read_files import read_allocation_pTTs
 
 
