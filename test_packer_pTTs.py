@@ -36,6 +36,8 @@ for idx, event in enumerate(events):
   create_pTTs(event,args,1)
   print(event.ds_pTTsCEE)
   print(event.ds_pTTsCEH)
+  print(event.ds_pTTsdupCEE)
+  print(event.ds_pTTsdupCEH)
   #print(event.data_packer)
   #print(event.phi_gen)
   #print(event.eta_gen)
