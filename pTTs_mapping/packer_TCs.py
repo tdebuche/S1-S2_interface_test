@@ -24,9 +24,9 @@ def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
     for tc_idx, TC_xml in enumerate(xml_alloc):
         if tc_idx > len(mod_energy)-1: break
         n_link = TC_xml['n_link']
-        value_energy, code_energy = compress_value(mod_energy[tc_idx]/self.LSB)
+        value_energy, code_energy = compress_value(mod_energy[tc_idx]/event.LSB)
         value_r_z = int(mod_r_over_z[tc_idx]/event.LSB_r_z) & 0xFFF # 12 bits
-        value_phi = int((mod_phi[tc_idx]-self.offset_phi)/event.LSB_phi) & 0xFFF # 12 bits
+        value_phi = int((mod_phi[tc_idx]-event.offset_phi)/event.LSB_phi) & 0xFFF # 12 bits
         data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ code_energy, value_r_z, value_phi]
  
 def _process_event(event, args):
@@ -51,7 +51,7 @@ def _process_event(event, args):
 
 
     
-def _data_packer(self, args):
+def _data_packer(event, args):
     data_TCs = _process_event(event, args)
     event.data_packer = data_TCs
 
