@@ -38,7 +38,7 @@ for idx, event in enumerate(events):
   _pTT_packer(event,args)
   #print(event.TC_packer)
   #print(event.pTT_packer)
-  record_plot(event,xml_plot,args,'pTT_event'+str(idx))
+  record_plot(event,args,'pTT_event'+str(idx))
 
 
   #print(event.pTT_packer)
