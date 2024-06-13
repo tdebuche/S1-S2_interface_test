@@ -11,7 +11,7 @@ def provide_ts(event):
     ts = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
         if event.ds_si.good_tc_waferu[module_idx][0] != -999:
-            layer = event.ds_si.good_tc_layer[module_idx][0],
+            layer = event.ds_si.good_tc_layer[module_idx][0]
             u,v,sector = getuvsector(layer,
                                      event.ds_si.good_tc_waferu[module_idx][0],
                                      event.ds_si.good_tc_waferv[module_idx][0])
