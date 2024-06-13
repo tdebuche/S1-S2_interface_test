@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from link_unpacking.unpack_links import create_energies
+from link_unpacking.read_files import read_xml_plot
 
 
 
 
-def record_plot(event,etaphi_links,args,title):
+def record_plot(event,args,title):
     data_links = event.pTT_packer
+    etaphi_links = read_xml_plot(args.Edges,args.Sector)
     energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
     createplot(args,event,energiesCEE,BinXY,title+'CEE')
