@@ -8,36 +8,6 @@ from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from link_unpacking.unpack_links import create_energies
 
 
-def create_bins(args):
-    Edges = args.Edges
-    if Edges == 'yes': 
-        nb_phi = 28 + 9
-        phimin =-15 * np.pi/180
-    else : 
-        nb_phi = 24 + 6
-        phimin =  0 * np.pi/180
-    nb_phi = 36
-    phimin =  0 * np.pi/180
-    etamin = 1.305
-    L = [[[]for phi in range(nb_phi)]for eta in range(20)]
-    BinsXY =[[[]for phi in range(nb_phi)]for eta in range(20)] 
-    for eta in range(20):
-        for phi in range(nb_phi):
-            vertices = np.array([[eta * np.pi/36 + etamin,(eta+1) * np.pi/36 + etamin,
-                    (eta+1) * np.pi/36 + etamin,eta * np.pi/36 + etamin],
-                   [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
-                    (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
-            verticesXY = etaphitoXY(vertices[0],vertices[1],1)
-            BinsXY[eta][phi].append(verticesXY[0].tolist()+[verticesXY[0][0]])
-            BinsXY[eta][phi].append(verticesXY[1].tolist()+[verticesXY[1][0]])
-    return BinsXY
-            
-
-    
-def etaphitoXY(eta,phi,z):
-    x = z * np.tan(2*np.arctan(np.exp(-eta))) * np.cos(phi)
-    y = z * np.tan(2*np.arctan(np.exp(-eta))) * np.sin(phi)
-    return(x,y)
 
 
 def record_plot(event,etaphi_links,args,title):
@@ -92,6 +62,38 @@ def createplot(args,event,energies,BinXY,title):
     energy_cluster = energycluster(energies,etamax,phimax)
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     plt.savefig('plot_pTTs/'+title +'.png')
+
+
+def create_bins(args):
+    Edges = args.Edges
+    if Edges == 'yes': 
+        nb_phi = 28 + 9
+        phimin =-15 * np.pi/180
+    else : 
+        nb_phi = 24 + 6
+        phimin =  0 * np.pi/180
+    nb_phi = 36
+    phimin =  0 * np.pi/180
+    etamin = 1.305
+    L = [[[]for phi in range(nb_phi)]for eta in range(20)]
+    BinsXY =[[[]for phi in range(nb_phi)]for eta in range(20)] 
+    for eta in range(20):
+        for phi in range(nb_phi):
+            vertices = np.array([[eta * np.pi/36 + etamin,(eta+1) * np.pi/36 + etamin,
+                    (eta+1) * np.pi/36 + etamin,eta * np.pi/36 + etamin],
+                   [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
+                    (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
+            verticesXY = etaphitoXY(vertices[0],vertices[1],1)
+            BinsXY[eta][phi].append(verticesXY[0].tolist()+[verticesXY[0][0]])
+            BinsXY[eta][phi].append(verticesXY[1].tolist()+[verticesXY[1][0]])
+    return BinsXY
+            
+
+    
+def etaphitoXY(eta,phi,z):
+    x = z * np.tan(2*np.arctan(np.exp(-eta))) * np.cos(phi)
+    y = z * np.tan(2*np.arctan(np.exp(-eta))) * np.sin(phi)
+    return(x,y)
 
 
 
