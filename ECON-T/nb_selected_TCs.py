@@ -1,14 +1,26 @@
-        nb_selected_TCs = defaultdict(list)
-        selected_TCs = self.ds_si
-        for module_idx in range(len(self.ds_si.good_tc_layer)):
-            u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
-                                        self.ds_si.good_tc_waferu[module_idx][0],
-                                        self.ds_si.good_tc_waferv[module_idx][0])
-            module_alloc = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
-            module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
-            xml_alloc = self.get_TC_allocation(xml[0], module_alloc)
-            if xml_alloc: 
-                n_TCs = xml_alloc[-1]['index']
-                nb_selected_TCs[module].append(n_TCs)  
+import xml.etree.ElementTree as ET
+from collections import defaultdict
+import math
+import numpy as np
+import awkward as ak
 
-        TCs = self.ds_si
+def get():
+    tree = ET.parse('config_files/S1.ChannelAllocation.xml')
+    root = tree.getroot()
+    
+    nb_selected_TCs = defaultdict(list)
+
+    for s1_element in root.findall('.//S1'):
+        for channel_element in s1_element.findall('.//Channel'):
+            for frame_element in channel_element.findall('.//Frame'):
+                if all(attr in frame_element.attrib for attr in ['id', 'column', 'Module']):
+                    module = hex(int(frame_element.get('Module'),16))
+                    index  = int(frame_element.get('index'))
+                    
+                    if not nb_selected_TCs[module]:
+                        nb_selected_TCs[module].append(0)
+                        
+                    nb_selected_TCs[module][0] += 1
+                    
+    return nb_selected_TCs
+    
