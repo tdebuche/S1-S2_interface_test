@@ -1,5 +1,6 @@
 from collections import defaultdict
 import numpy as np
+import awkward as ak
 import math
 from data_handle.tools import getuvsector,get_module_id,get_MB_id
 from link_packing.read_files import read_xml,MB_geometry
