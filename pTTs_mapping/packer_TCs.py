@@ -5,9 +5,6 @@ from data_handle.tools import getuvsector,get_module_id,get_MB_id
 from pTTs_mapping.read_files import read_xml,MB_geometry
 
 
-xml = geometry.read_xml()
-xml_MB = geometry.MB_geometry()
-
 def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
     
     n_TCs = xml_alloc[-1]['index']  # dangerous
@@ -29,7 +26,7 @@ def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
         value_phi = int((mod_phi[tc_idx]-event.offset_phi)/event.LSB_phi) & 0xFFF # 12 bits
         data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ code_energy, value_r_z, value_phi]
  
-def _process_event(event, args):
+def _process_event(event, args,xml,xml_MB):
     data_TCs = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
         layer = event.ds_si.good_tc_layer[module_idx][0]
@@ -41,7 +38,6 @@ def _process_event(event, args):
             xml_alloc = xml[0][MB]
             if xml_alloc: 
                 _process_module(event,event.ds_si, module_idx, xml_alloc, data_TCs)
-
     for MB_idx in range(len(event.ds_sci.good_tc_layer)):
         layer = event.ds_si.good_tc_layer[MB_idx][0]
         MB = get_MB_id(layer,event.ds_sci.MB_v[MB_idx][0], xml_MB)
@@ -52,6 +48,8 @@ def _process_event(event, args):
 
     
 def _data_packer(event, args):
-    data_TCs = _process_event(event, args)
+    xml = geometry.read_xml()
+    xml_MB = geometry.MB_geometry()
+    data_TCs = _process_event(event,args,xml,xml_MB)
     event.data_packer = data_TCs
 
