@@ -1,5 +1,17 @@
 import yaml
 
+
+def get_pTT_id(Sector, S1Board, CEECEH, eta,phi):
+    return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
+    
+
+def get_module_id(self,Sector, plane, u, v):
+    return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
+
+def get_MB_id(self, plane, v, MB):
+    return MB[int(plane)][int(v)]
+
+
 def compress_value(value, exponent_bits=4, mantissa_bits=3, truncation_bits=0):
     saturation_code = (1 << (exponent_bits + mantissa_bits)) - 1
     saturation_value = ((1 << (mantissa_bits + truncation_bits + 1)) - 1) << ((1 << exponent_bits) - 2)
