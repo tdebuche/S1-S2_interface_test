@@ -10,7 +10,7 @@ from data_handle.tools import getuvsector,get_module_id
 def provide_ts(event):
     ts = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
-        if u != -999:
+        if event.ds_si.good_tc_waferu[module_idx][0] != -999:
             layer = event.ds_si.good_tc_layer[module_idx][0],
             u,v,sector = getuvsector(layer,
                                      event.ds_si.good_tc_waferu[module_idx][0],
@@ -28,7 +28,7 @@ def provide_unselected_ts(event):
     nb_selected_TCs = nb_selected_TCs.get()
     unselected_ts = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
-        if u != -999:
+        if event.ds_si.good_tc_waferu[module_idx][0]!= -999:
             layer = event.ds_si.good_tc_layer[module_idx][0]
             u,v,sector = getuvsector(layer,
                                         event.ds_si.good_tc_waferu[module_idx][0],
