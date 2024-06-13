@@ -2,7 +2,7 @@ from collections import defaultdict
 import numpy as np
 import math
 from data_handle.tools import getuvsector,get_module_id,get_MB_id
-from pTTs_mapping.read_files import read_xml,MB_geometry
+from link_packing.read_files import read_xml,MB_geometry
 
 
 def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
