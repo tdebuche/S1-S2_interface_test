@@ -11,8 +11,8 @@ class EventData():
     def __init__(self, ds_si, ds_sci, gen):
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
-        self.ds_ts = self.provide_ts()
-        self.ds_unselected_ts = self.provide_unselected_ts()
+        self.ds_ts = provide_ts(self.ds_si)
+        self.ds_unselected_ts = provide_unselected_ts(self.ds_si)
         self.ds_stc = None
         self.ds_pTTsCEE = None
         self.ds_pTTsdupCEE = None
