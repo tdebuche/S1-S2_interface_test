@@ -12,6 +12,7 @@ from S1_simulation.S1_simulator import create_pTTs
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
 parser.add_argument('--particles', type=str, default='photons', help='Choose the particle sample')
+parser.add_argument('--Scenario', type=str, default='TS', help='Choose TS or unselected_TS')
 parser.add_argument('--pileup',    type=str, default='PU0',     help='Choose the pileup - PU0 or PU200')
 parser.add_argument('--plot',        action='store_true', help='Create plots')
 parser.add_argument('--col',         action='store_true', help='Create plots using column numbers')
