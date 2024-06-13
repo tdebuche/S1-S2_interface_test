@@ -5,7 +5,6 @@ import numpy as np
 import awkward as ak
 import nb_selected_TCs 
 
-self
 def provide_ts(event):
     ts = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
@@ -26,7 +25,7 @@ def provide_ts(event):
 def provide_unselected_ts(event):
     nb_selected_TCs = nb_selected_TCs.get()
     unselected_ts = defaultdict(list)
-    for module_idx in range(len(self.ds_si.good_tc_layer)):
+    for module_idx in range(len(event.ds_si.good_tc_layer)):
         if u != -999:
             layer = event.ds_si.good_tc_layer[module_idx][0]
             u,v,sector = getuvsector(layer,
