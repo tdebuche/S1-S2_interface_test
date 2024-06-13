@@ -36,13 +36,13 @@ def provide_unselected_ts(event):
             module = get_module_id(sector,layer,u,v)
             module_alloc = get_module_id(3,layer,u,v)
             if layer < 48:  #change to 27 when STCs
-                if ts[module] == []:
-                    ts[module].append(0)
+                if unselected_ts[module] == []:
+                    unselected_ts[module].append(0)
                 if nb_selected_TCs[module_alloc]:
                     for idx in range(nb_selected_TCs[module_alloc][0],len(event.ds_si.good_tc_layer[module_idx])):
-                        ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
+                        unselected_ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
                 if not nb_selected_TCs[module_alloc]:
-                    print(sector, layer,u,v) #see the differences in geometries
+                    print('not allocated = ',sector, layer,u,v) #see the differences in geometries
          
     return(unselected_ts)
         
