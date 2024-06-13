@@ -5,23 +5,9 @@ import math
 import yaml
 import os
 import argparse
-import cppyy
 import numpy as np
-cppyy.add_include_path(os.path.abspath(''))
-cppyy.load_library('lib_configuration.so')
-cppyy.include('L1Trigger/L1THGCal/interface/backend_emulator/HGCalHistoClusteringImpl_SA.h')
-cppyy.include('L1Trigger/L1THGCal/interface/backend_emulator/HGCalLinkTriggerCell_SA.h')
 
-from cppyy.gbl import l1thgcfirmware
-from data_handle.S1simulator import build_pTTsCEE
-from data_handle.read_files_pTTs import read_build_pTTs
-from data_handle.read_files_pTTs import read_allocation_pTTs
 from data_handle.event_pTT import provide_events
-from data_handle.plot_pTT import create_energies
-from data_handle.plot_pTT import record_plot
-from data_handle.EMPfile import createEMPfile
-import data_handle.geometry as geometry
-from data_handle.plot_pTT import read_xml_plot
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
