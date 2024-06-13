@@ -41,9 +41,9 @@ def _process_TC_data(event, args,xml,xml_MB):
                 _process_module(event,event.ds_si, module_idx, xml_alloc, data_TCs)
     for MB_idx in range(len(event.ds_sci.good_tc_layer)):
         layer = event.ds_si.good_tc_layer[MB_idx][0]
-        MB = get_MB_id(layer,event.ds_sci.MB_v[MB_idx][0], xml_MB)
-        xml_alloc =xml[1][MB]
-        if xml_alloc: _process_module(event,event.ds_sci, MB_idx, xml_alloc, data_TCs)
+        #MB = get_MB_id(layer,event.ds_sci.MB_v[MB_idx][0], xml_MB)
+        #xml_alloc =xml[1][MB]
+        #if xml_alloc: _process_module(event,event.ds_sci, MB_idx, xml_alloc, data_TCs)
     return data_TCs
 
 
