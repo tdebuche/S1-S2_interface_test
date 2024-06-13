@@ -4,6 +4,8 @@ import math
 import numpy as np
 import awkward as ak
 import nb_selected_TCs 
+from data_handle.tools import getuvsector,get_module_id
+
 
 def provide_ts(event):
     ts = defaultdict(list)
@@ -32,14 +34,15 @@ def provide_unselected_ts(event):
                                         event.ds_si.good_tc_waferu[module_idx][0],
                                         event.ds_si.good_tc_waferv[module_idx][0])
             module = get_module_id(sector,layer,u,v)
+            module_alloc = get_module_id(3,layer,u,v)
             if layer < 48:  #change to 27 when STCs
                 if ts[module] == []:
                     ts[module].append(0)
-                if nb_selected_TCs[module]:
-                    for idx in range(nb_selected_TCs[module][0],len(event.ds_si.good_tc_layer[module_idx])):
+                if nb_selected_TCs[module_alloc]:
+                    for idx in range(nb_selected_TCs[module_alloc][0],len(event.ds_si.good_tc_layer[module_idx])):
                         ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
-                if not nb_selected_TCs[module]:
-                    print(sector, event.ds_si.good_tc_layer[module_idx][0],u,v) #see the differences in geometries
+                if not nb_selected_TCs[module_alloc]:
+                    print(sector, layer,u,v) #see the differences in geometries
          
     return(unselected_ts)
         
