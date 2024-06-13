@@ -37,31 +37,6 @@ class EventData():
 
     def ObjectType(self, object_type):
         return ((object_type & 0xF) << 22)
-    
-    def get_module_id(self,Sector, plane, u, v):
-        return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
-
-    def get_pTT_id(self, Sector , S1Board, CEECEH, eta, phi):
-        return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-    
-    def get_MB_id(self, plane, v, MB):
-        return MB[int(plane)][int(v)]
-                
-            
-    def get_pTT_allocation(self, xml_allocation, pTT):
-        return xml_allocation[pTT]
-        
-    def get_pTT_duplication(self,xml_duplication,pTT):
-        return xml_duplication[pTT]
-        
-    def get_TC_allocation(self, xml_data, module):
-        return xml_data[module]
-
-    def get_pTT_id(self, Sector, S1Board, CEECEH, eta,phi):
-        S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
-        pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-        return pTT_id
-
 
     def provide_ts(self,args,xml):
         nb_selected_TCs = defaultdict(list)
