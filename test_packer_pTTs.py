@@ -9,8 +9,8 @@ import numpy as np
 
 from data_handle.event import provide_events
 from S1_simulation.S1_simulator import create_pTTs
-from links_packing.packer_TCs import _TC_packer
-from links_packing.packer_pTTs import _pTT_packer
+from link_packing.packer_TCs import _TC_packer
+from link_packing.packer_pTTs import _pTT_packer
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
