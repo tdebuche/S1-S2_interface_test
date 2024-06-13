@@ -6,28 +6,27 @@ import math
 import yaml
 from data_handle.S1simulator import build_pTTsCEE,add_TCs
 from data_handle.tools import compress_value, printProgressBar, getuvsector
-
+from ECONT.Trigger_Sums import provide_ts, provide_unseleceted_ts
 
 class EventData():
     def __init__(self, ds_si, ds_sci, gen):
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
-        self.ds_ts = None
-        self.ds_unselected_ts = None
+        self.ds_ts = self.provide_ts()
+        self.ds_unselected_ts = self.provide_unselected_ts()
         self.ds_stc = None
         self.ds_pTTsCEE = None
         self.ds_pTTsdupCEE = None
         self.ds_pTTsCEH = None
         self.ds_pTTsdupCEH = None
+        self.TCs_packer = None
+        self.pTT_packer = None
         self.gen     = gen
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
         self.phi_gen = gen.good_genpart_exphi[0]
         self.pT_gen  = self._compute_pt(self.eta_gen,
-                             gen.good_genpart_energy[0])
-
-        self.TCs_packer = None
-        self.pTT_packer = None          ######################add##################
+                             gen.good_genpart_energy[0])        
         self.LSB = 1/10000 # 100 keV
         self.LSB_r_z = 0.7/4096
         self.LSB_phi = np.pi/1944
@@ -35,9 +34,6 @@ class EventData():
 
     def _compute_pt(self, eta, energy):
         return energy/np.cosh(eta)
-
-    def ObjectType(self, object_type):
-        return ((object_type & 0xF) << 22)
 
 
 def provide_event(ev, gen):
