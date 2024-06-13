@@ -34,7 +34,14 @@ class EventData():
     def _compute_pt(self, eta, energy):
         return energy/np.cosh(eta)
 
+with open('config.yaml', "r") as afile:
+    cfg_particles = yaml.safe_load(afile)["particles"]
 
+def apply_sort(df, counts, axis):
+    for field in df.fields:
+        df[field] = ak.unflatten(df[field], counts, axis)
+    return df
+    
 def provide_event(ev, gen):
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
     ev['MB_v'] = np.floor((ev.good_tc_cellv-1)/4)
