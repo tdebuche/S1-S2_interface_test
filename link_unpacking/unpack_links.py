@@ -1,16 +1,8 @@
 import numpy as np
-import awkward as ak
-import uproot
 import math
-import yaml
-import os
-import argparse
 import numpy as np
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 
 
 
