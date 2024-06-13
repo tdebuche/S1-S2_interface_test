@@ -1,0 +1,64 @@
+s2emu_config:
+  cClocks: 0
+  cInputs: 0
+  cInputs2: 0
+  cInt: 0
+  cColumns: 124
+  cRows: 54
+  rOverZHistOffset: 440
+  rOverZBinSize: 64
+  kernelWidths: []
+  areaNormalizations: []
+  thresholdMaximaParam_a: [2., 4., 6., 10] # [8000, 12000, 16000, 20000] # 400000
+  thresholdMaximaParam_b: [0] #, 100, 300, 500] # 2000
+  thresholdMaximaParam_c: 0 # -80
+  # thresholdMaximaConstants: []
+  maximaWidths: [ 6 , 5 , 5 , 5 , 4 , 4 , 4 , 4 , 3 , 3 , 3 , 3 , 3 , 3 , 3 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ]
+  fanoutWidths: [ 6 , 5 , 5 , 5 , 4 , 4 , 4 , 4 , 3 , 3 , 3 , 3 , 3 , 3 , 3 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ]
+  cosLUT: []
+  clusterizerMagicTime: 0
+  stepLatency: 
+    - UnpackLinks: 3
+    - TriggerCellDistribution: 2
+    - UnpackTriggerCells: 4
+    - TcToHc: 2
+    - Hist: 231
+    - Smearing1D: 6
+    - Interleaving: 1
+    - NormArea: 3
+    - Smearing2D: 5
+    - Deinterleaved: 4
+    - Maxima1D: 5
+    - Interleaving2: 11
+    - Maxima2D: 6
+    - ThresholdMaxima: 13
+    - CalcAverage: 4
+    - Deinterleaving2: 15
+    - MaximaFanout: 9
+    - Clusterizer: 0
+    - TriggerCellToCluster: 8
+  depths: [ 1, 0 , 30 , 59 , 89 , 118 , 148 , 178 , 208 , 237 , 267 , 297 , 327 , 356 , 386 , 415 , 445 , 475 , 505 , 534 , 564 , 594 , 624 , 653 , 683 , 712 , 742 , 772 , 802 , 911 , 1020 , 1129 , 1238 , 1347 , 1456 , 1565 , 1674 , 1783 , 1892 , 2001 , 2110 , 2281 , 2452 , 2623 , 2794 , 2965 , 3136 , 3307 , 3478 , 3649 , 3820 ]
+  triggerLayers: [ 1 , 1 , 0 , 2 , 0 , 3 , 0 , 4 , 0 , 5 , 0 , 6 , 0 , 7 , 0 , 8 , 0 , 9 , 0 , 10 , 0 , 11 , 0 , 12 , 0 , 13 , 0 , 14 , 0 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 , 23 , 24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 ]
+  layerWeights_E: [ 1, 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ]
+  layerWeights_E_EM: [ 1, 252969 , 0 , 254280 , 0 , 255590 , 0 , 256901 , 0 , 258212 , 0 , 259523 , 0 , 260833 , 0 , 262144 , 0 , 263455 , 0 , 264765 , 0 , 266076 , 0 , 267387 , 0 , 268698 , 0 , 270008 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ]
+  layerWeights_E_EM_core: [ 1, 0 , 0 , 0 , 0 , 0 , 0 , 256901 , 0 , 258212 , 0 , 259523 , 0 , 260833 , 0 , 262144 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ]
+  layerWeights_E_H_early: [ 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ]
+  correction: 131071 
+  saturation: 1048575 # ( (2<<19) - 1 )
+
+particles:
+  base_path: /eos/home-m/mchiusi/s2_emulator/
+  PU0:
+    photons:
+      tree: l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple
+      file: SinglePhoton_Pt-2To200_Fall22_MiniAOD-noPU_24-05-02_emulator_realbcstc_v2-v1.root
+    pions:
+      tree: l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple
+      file: SinglePion_Pt-0To200_Phase2Fall22DRMiniAOD-noPU_24-05-02_emulator_realbcstc_v2-v1.root
+  PU200:
+    photons:
+      tree: l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple
+      file: DoublePhoton_FlatPt-1To100_PU200_Phase2Fall22DRMiniAOD_24-05-02_emulator_realbcstc_v2-v1.root
+    pions:
+      tree: l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple
+      file: SinglePion_Pt-0To200_Phase2Fall22DRMiniAOD-PU200_24-05-02_emulator_realbcstc_v2-v1.root
