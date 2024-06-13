@@ -1,9 +1,6 @@
 from collections import defaultdict
 import numpy as np
-import awkward as ak
-import uproot
 import math
-import yaml
 from data_handle.tools import getuvsector,get_module_id,get_MB_id
 from pTTs_mapping.read_files import read_xml,MB_geometry
 
