@@ -3,9 +3,10 @@ from collections import defaultdict
 import math
 import numpy as np
 import awkward as ak
+from data_handle.tools import get_pTT_id
 
 
-def get_pTT_id(Sector, S1Board, CEECEH, x):
+def get_pTT_id_bis(Sector, S1Board, CEECEH, x):
     eta = x[x.find('eta')+3]
     if x[x.find('eta')+4] != '-':
         eta += x[x.find('eta')+4]
@@ -15,10 +16,7 @@ def get_pTT_id(Sector, S1Board, CEECEH, x):
     eta = int(eta)
     phi = int(phi)
     S1Board = (int(S1Board[4],16)*16 + int(S1Board[5],16)) & 0x3F
-    pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-    #while len(pTT_id) <10:
-    #    pTT_id = '0x'+ str(0) +pTT_id[2:]
-    return pTT_id
+    return get_pTT_id(Sector, S1Board, CEECEH,eta,phi)
     
 def get_moduleCEE(x,Sector):
     start_cursor = 0
