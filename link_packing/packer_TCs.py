@@ -34,7 +34,7 @@ def _process_TC_data(event, args,xml,xml_MB):
                                  event.ds_si.good_tc_waferu[module_idx][0],
                                  event.ds_si.good_tc_waferv[module_idx][0])
         if sector ==0:
-            module = event.get_module_id(3,layer,u,v)
+            module = get_module_id(3,layer,u,v)
             xml_alloc = xml[0][MB]
             if xml_alloc: 
                 _process_module(event,event.ds_si, module_idx, xml_alloc, data_TCs)
