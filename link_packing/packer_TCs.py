@@ -48,8 +48,8 @@ def _process_TC_data(event, args,xml,xml_MB):
 
     
 def _TC_packer(event, args):
-    xml = geometry.read_xml()
-    xml_MB = geometry.MB_geometry()
+    xml = read_xml()
+    xml_MB = MB_geometry()
     data_TCs = _process_TC_data(event,args,xml,xml_MB)
     event.TC_packer = data_TCs
 
