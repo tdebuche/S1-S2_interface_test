@@ -16,7 +16,7 @@ def fill_links(pTTs,links,xml):
         else : print('error pTT has no allocation')
             
 
-def _process_eventpTT(event,args,xml_allocation,xml_duplication):
+def _process_pTT_data(event,args,xml_allocation,xml_duplication):
     data_pTTs = defaultdict(list)
     
     #fill CEE links 
@@ -34,5 +34,5 @@ def _process_eventpTT(event,args,xml_allocation,xml_duplication):
 def _pTT_packer(event, args):
     xml_allocation = read_allocation_pTTs(args.Edges,args.Sector,4)
     xml_duplication = read_allocation_pTTs(args.Edges,args.Sector,2)
-    data_pTTs = _process_eventpTT(event,args,xml_allocation,xml_duplication)
+    data_pTTs = _process_pTT_data(event,args,xml_allocation,xml_duplication)
     event.pTT_packer =  data_pTTs
