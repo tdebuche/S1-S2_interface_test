@@ -4,7 +4,6 @@ import awkward as ak
 import uproot
 import math
 import yaml
-from data_handle.S1simulator import build_pTTsCEE,add_TCs
 from data_handle.tools import compress_value, printProgressBar, getuvsector
 from ECONT.Trigger_Sums import provide_ts, provide_unseleceted_ts
 
