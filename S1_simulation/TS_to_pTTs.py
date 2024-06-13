@@ -1,6 +1,4 @@
 import numpy as np
-from data_handle.tools import getuvsector
-from collections import defaultdict
 
 
 
