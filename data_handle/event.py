@@ -18,7 +18,7 @@ class EventData():
         self.ds_pTTsdupCEE = None
         self.ds_pTTsCEH = None
         self.ds_pTTsdupCEH = None
-        self.TCs_packer = None
+        self.TC_packer = None
         self.pTT_packer = None
         self.gen     = gen
         self.event   = gen.event
