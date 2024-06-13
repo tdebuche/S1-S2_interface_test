@@ -3,7 +3,7 @@ from collections import defaultdict
 import math
 import numpy as np
 import awkward as ak
-from data_handle.tools import get_pTT_id
+from data_handle.tools import get_pTT_id,get_module_id
 
 
 def get_pTT_id_bis(Sector, S1Board, CEECEH, x):
@@ -27,9 +27,8 @@ def get_moduleCEE(x,Sector):
     u = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     v = int(x[start_cursor:])
-    module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
-    #while len(module_id) <10:
-    #    module_id = '0x'+ str(0) +module_id[2:]
+    module_id = get_module_id(Sector, layer, u, v)
+    
     return(module_id,layer,u,v)
                                                                                                                                                  
 
@@ -45,14 +44,13 @@ def get_moduleCEH(x,Sector):
     v = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     stc = int(x[start_cursor:])
-    module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
-    #while len(module_id) <10:
-    #    module_id = '0x'+ str(0) +module_id[2:]
+    module_id = get_module_id(Sector, layer, u, v)
+    
     return(module_id,layer,u,v,stc)
 
 
 def read_pTT(x,S1Board,CEECEH,Sector):
-    pTT = {'pTT' :get_pTT_id(Sector,S1Board,CEECEH,x), 'Modules':[]}
+    pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
     cursor = x.find('\t')+1
     nb_module = int(x[cursor])
     for k in range(nb_module): 
