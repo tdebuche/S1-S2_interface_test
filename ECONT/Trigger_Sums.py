@@ -3,7 +3,7 @@ from collections import defaultdict
 import math
 import numpy as np
 import awkward as ak
-import nb_selected_TCs 
+import ECONT.nb_selected_TCs 
 from data_handle.tools import getuvsector,get_module_id
 
 
