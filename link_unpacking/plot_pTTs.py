@@ -15,6 +15,8 @@ def record_plot(event,args,title):
     data_links = event.pTT_packer
     etaphi_links = read_xml_plot(args.Edges,args.Sector)
     energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
+    print(energiesCEE)
+    print(energiesCEH)
     BinXY = create_bins(args)
     createplot(args,event,energiesCEE,BinXY,title+'CEE')
     createplot(args,event,energiesCEH,BinXY,title+'CEH')
@@ -65,7 +67,6 @@ def createplot(args,event,energies,BinXY,title):
     energy_cluster = energycluster(energies,etamax,phimax)
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     plt.savefig('plot_pTTs/'+title +'.png')
-    print(weights)
 
 
 def create_bins(args):
