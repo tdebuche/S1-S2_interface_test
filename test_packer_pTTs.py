@@ -33,12 +33,13 @@ for idx, event in enumerate(events):
   create_pTTs(event,args,0)
   create_pTTs(event,args,1)
   print(event.ds_pTTsCEH)
+  print(event.ds_ts)
   #packing
   _TC_packer(event,args)
   _pTT_packer(event,args)
   #print(event.TC_packer)
   #print(event.pTT_packer)
-  record_plot(event,args,'pTT_event'+str(idx))
+  #record_plot(event,args,'pTT_event'+str(idx))
 
 
   #print(event.pTT_packer)
