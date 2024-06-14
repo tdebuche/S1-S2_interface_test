@@ -44,8 +44,8 @@ def createplot(args,event,energies,BinXY,title):
             pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     if weightmax == 0: weightmax = 1
-    #sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
-    sc = plt.scatter(pointXY[0],pointXY[1],c=np.log(weights), vmin=0)
+    sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
+    #sc = plt.scatter(pointXY[0],pointXY[1],c=np.log(weights), vmin=0)
     plt.colorbar(sc)
     res = 0 
     #colors = cm.get_cmap("viridis", 8)
