@@ -32,8 +32,9 @@ for idx, event in enumerate(events):
   #create pTTs
   create_pTTs(event,args,0)
   create_pTTs(event,args,1)
-  print(event.ds_pTTsCEH)
-  print(event.ds_ts)
+  #print(event.ds_pTTsCEH)
+  #print(event.ds_ts)
+  print(event.ds_si.good_tc_layer)
   #packing
   _TC_packer(event,args)
   _pTT_packer(event,args)
