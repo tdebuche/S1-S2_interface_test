@@ -32,7 +32,7 @@ for idx, event in enumerate(events):
   #create pTTs
   create_pTTs(event,args,0)
   create_pTTs(event,args,1)
-
+  print(event.ds_pTTsCEH)
   #packing
   _TC_packer(event,args)
   _pTT_packer(event,args)
