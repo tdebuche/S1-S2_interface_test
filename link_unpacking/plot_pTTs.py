@@ -34,7 +34,7 @@ def createplot(args,event,energies,BinXY,title):
             X.append(BinXY[eta][phi][0][0])
             Y.append(BinXY[eta][phi][1][0])
             if energies[eta][phi] != 100000:
-                weights.append(energies[eta][phi]+1)
+                weights.append(energies[eta][phi])
                 if  energies[eta][phi] > weightmax:
                     weightmax = energies[eta][phi]
                     etamax = eta
