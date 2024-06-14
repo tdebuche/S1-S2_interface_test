@@ -9,8 +9,6 @@ from collections import defaultdict
 
 def create_pTTs(event,args,Sector):
     file_CEE,file_CEH = read_build_pTTs(args.Edges,Sector)
-    print(file_CEE)
-    print(file_CEH)
     if args.Scenario == 'TS': ts = event.ds_ts
     if args.Scenario == 'unselected_TS': ts = event.ds_unselected_ts
     pTTs_CEE = build_pTTsCEE(ts, args, file_CEE)
