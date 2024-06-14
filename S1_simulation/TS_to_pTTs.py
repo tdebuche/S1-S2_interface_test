@@ -3,9 +3,6 @@ import numpy as np
 
 
 def build_pTTsCEE(ts_energy, args, S1pTTCEE):
-    if args.Edges == 'yes': nb_phi = 28
-    else : nb_phi = 24
-    Sector = args.Sector
     pTTsCEE = []
     for pTT_idx in range(len(S1pTTCEE)):
         energyCEE = 0
@@ -23,9 +20,6 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
 
 
 def build_pTTsCEH(stc_energy,args,S1pTTCEH):
-    if args.Edges == 'yes': nb_phi = 28
-    else : nb_phi = 24
-    Sector = args.Sector
     pTTsCEH = []
     for pTT_idx in range(len(S1pTTCEH)):
         energyCEH = 0
