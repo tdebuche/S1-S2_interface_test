@@ -66,7 +66,7 @@ def createplot(args,event,energies,BinXY,title):
     pt_gen  = str(round(event.pT_gen))
     energy_cluster = energycluster(energies,etamax,phimax)
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
-    plt.savefig('plot_pTTs/'+title +'.png')
+    plt.savefig('plot_pTTs/'+args.particles+'/'+args.pileup+'/'+title +'.png')
 
 
 def create_bins(args):
