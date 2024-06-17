@@ -11,7 +11,7 @@ from data_handle.event import provide_events
 from S1_simulation.S1_simulator import create_pTTs
 from link_packing.packer_TCs import _TC_packer
 from link_packing.packer_pTTs import _pTT_packer
-from link_unpacking.plot_pTTs import record_plot
+from link_unpacking.plot_TTs import record_plot
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
