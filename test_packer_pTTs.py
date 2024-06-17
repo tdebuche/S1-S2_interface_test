@@ -30,14 +30,15 @@ events = provide_events(args.n, args.particles, args.pileup)
 
 for idx, event in enumerate(events):
   #create pTTs
-  create_pTTs(event,args,0)
-  create_pTTs(event,args,1)
+  #create_pTTs(event,args,0)
+  #create_pTTs(event,args,1)
   #print(event.ds_pTTsCEH)
   #print(event.ds_ts)
-  print(event.ds_si.good_tc_layer)
+  for module_idx in range(len(event.ds_si.good_tc_layer)):
+    print(event.ds_si.good_tc_layer[module_idx])
   #packing
-  _TC_packer(event,args)
-  _pTT_packer(event,args)
+  #_TC_packer(event,args)
+  #_pTT_packer(event,args)
   #print(event.TC_packer)
   #print(event.pTT_packer)
   #record_plot(event,args,'pTT_event'+str(idx))
