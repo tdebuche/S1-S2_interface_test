@@ -20,8 +20,7 @@ def provide_ts(event):
                 if ts[module] == []:
                     ts[module].append(0)
                 for idx in range(len(event.ds_si.good_tc_layer[module_idx])):
-                    if layer not in [28,30,32]:
-                        ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
+                    ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
     return(ts)
 
 
