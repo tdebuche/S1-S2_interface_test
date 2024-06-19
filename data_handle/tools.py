@@ -73,9 +73,9 @@ def getuvsector(layer,u,v):
                 return(v-u,v,0)
             else :
                 if u >= 0:
-                    return (v,u,1)
+                    return (v,u,0)
                 else :
-                    return(-u,v-u,1)
+                    return(-u,v-u,0)
         else:
             if  (layer <34):
                 u,v = -v,u-v
@@ -104,6 +104,6 @@ def getuvsector(layer,u,v):
                         return(v-u,v,2)
                     else :
                         if u >= 0:
-                            return (v,u,1)
+                            return (v,u,2)
                         else :
-                            return(-u,v-u,1)
+                            return(-u,v-u,2)
