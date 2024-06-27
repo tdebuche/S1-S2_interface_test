@@ -46,3 +46,19 @@ def provide_unselected_ts(event):
          
     return(unselected_ts)
         
+def provide_STCs(event):
+    STCs = defaultdict(list)
+    for module_idx in range(len(event.ds_si.good_tc_layer)):
+        if event.ds_si.good_tc_layer[module_idx][0] > 26:   
+            layer = event.ds_si.good_tc_layer[module_idx][0]
+            u,v,sector = getuvsector(layer,
+                                     event.ds_si.good_tc_waferu[module_idx][0],
+                                     event.ds_si.good_tc_waferv[module_idx][0])
+            module = get_module_id(sector,layer,u,v)
+            HDorLD =  HDorLD_list[(Layer,u,v)][0]
+            for stc_idx in range(len(event.ds_si.good_tc_layer[module_idx])):
+                cell_u,cell_v = event.ds_si.good_tc_cellu[module_idx][stc_idx],event.ds_si.good_tc_cellv[module_idx][stc_idx]
+                stc_index = get_STC_index_from_TC(HDorLD,cell_u,cell_v)
+                STCs[(module,stc_index)].append(event.ds_si.good_tc_pt[module_idx][stc_idx])
+
+    return(STCs)
