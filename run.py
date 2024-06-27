@@ -31,7 +31,7 @@ parser.add_argument('--Edges',   default = 'yes', help='20*24 or 20*28 bins')
 args = parser.parse_args()
 
 
-events = provide_events(args.n, args.particles, args.pileup)
+events = provide_events(args,args.n, args.particles, args.pileup)
 
 #TS are created automatically
 
