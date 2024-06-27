@@ -74,19 +74,21 @@ def read_pTT(x,S1Board,CEECEH,Sector):
         cursor = end_module+2+x[end_module+2:].find('(')
     return(pTT)
         
-def read_build_pTTs(Edges,Sector):
+def read_build_pTTs(args,Sector):
+    Edges = args.Edges
+    pTT_version = args.pTT_version
     if Edges == 'yes':
-        fCEE = open('config_files/pTTs/Sector'+str(Sector)+'/CE_E_allBoards_Edges.txt', 'r')
+        fCEE = open('config_files/build_pTTs/'+pTT_version+'/28_phi_bins/CE_E_allBoards.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
-        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_EdgesNoSTCs.txt', 'r')
+        fCEH = open('config_files/build_pTTs/'+pTT_version+'/28_phi_bins/CE_H_allBoards.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
     if Edges == 'no':
-        fCEE = open('config_files/pTTs/Sector'+str(Sector)+'/CE_E_allBoards_NoEdges.txt', 'r')
+        fCEE = open('config_files/build_pTTs/'+pTT_version+'/24_phi_bins/CE_E_allBoards.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
-        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_NoEdgesNoSTCs.txt', 'r')
+        fCEH = open('config_files/build_pTTs/'+pTT_version+'/24_phi_bins/CE_H_allBoards.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
     pTTs_CEE = []
