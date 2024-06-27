@@ -14,7 +14,7 @@ class EventData():
         self.ds_sci  = ds_sci
         self.ds_ts = provide_ts(self)
         self.ds_unselected_ts = provide_unselected_ts(self)
-        self.ds_stc = provide_STCs(self)
+        self.ds_stc = provide_STCs(args,self)
         self.ds_pTTsCEE = None
         self.ds_pTTsdupCEE = None
         self.ds_pTTsCEH = None
