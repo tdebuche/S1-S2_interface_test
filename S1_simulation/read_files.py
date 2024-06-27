@@ -58,7 +58,10 @@ def get_moduleCEH(x,Sector):
 
 
 def read_pTT(x,S1Board,CEECEH,Sector):
-    pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
+    if CEECEH==0:
+        pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
+    if CEECEH==1:
+        pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'STCs':[]}
     cursor = x.find('\t')+1
     nb_module = int(x[cursor])
     for k in range(nb_module): 
