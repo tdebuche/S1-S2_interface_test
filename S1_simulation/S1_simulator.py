@@ -11,12 +11,13 @@ def create_pTTs(event,args,Sector):
     file_CEE,file_CEH = read_build_pTTs(args.Edges,Sector)
     if args.Scenario == 'TS': ts = event.ds_ts
     if args.Scenario == 'unselected_TS': ts = event.ds_unselected_ts
+    stc_energies = event.stc_energies
     pTTs_CEE = build_pTTsCEE(ts, args, file_CEE)
-    pTTs_CEH = build_pTTsCEE(ts, args, file_CEH) #wihtout STCs
+    pTTs_CEH = build_pTTsCEH(stc_energies, args, file_CEH) #wihtout STCs
     if args.Scenario == 'unselected_TS': 
         nb_selected_TCs = get()
         pTTs_CEE = add_TCs(pTTs_CEE,event.ds_si,nb_selected_TCs, Sector,'CEE')
-        pTTs_CEH = add_TCs(pTTs_CEH,event.ds_si,nb_selected_TCs, Sector,'CEH')
+        #pTTs_CEH = add_TCs(pTTs_CEH,event.ds_si,nb_selected_TCs, Sector,'CEH')
     if Sector == args.Sector:
         event.ds_pTTsCEE = pTTs_CEE
         event.ds_pTTsCEH = pTTs_CEH
