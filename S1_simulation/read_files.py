@@ -70,7 +70,7 @@ def read_pTT(x,S1Board,CEECEH,Sector):
             pTT['Modules'].append({'module_id' : module_id,'module_type' : type, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' : int(energy)})
         if CEECEH==1:
             module_id,layer,type,u,v,stc_idx = get_moduleCEH(x[start_module: end_module],Sector) #,stc_idx
-            pTT['STCs'].append({'module_id' : module_id,'module_type' : type,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc_idx ,'module_energy' : int(energy)}) 
+            pTT['STCs'].append({'module_id' : module_id,'module_type' : type,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc_idx ,'stc_energy' : int(energy)}) 
         cursor = end_module+2+x[end_module+2:].find('(')
     return(pTT)
         
