@@ -98,7 +98,7 @@ def provide_events(args,n, particles, PU):
 
     branches_tc = [
         'good_tc_x', 'good_tc_y', 'good_tc_z',
-        'good_tc_phi', 'good_tc_layer', 'good_tc_cellv',
+        'good_tc_phi', 'good_tc_layer', 'good_tc_cellu','good_tc_cellv',
         'good_tc_waferu', 'good_tc_waferv',
         'good_tc_pt', 'good_tc_subdet'
     ]
