@@ -95,12 +95,12 @@ def read_build_pTTs(args,Sector):
     for x in data_CEE:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
-        if x[0] == '/':
+        if x[0:6] == '/* out':
             pTTs_CEE.append(read_pTT(x,S1Board,0,Sector))
     pTTs_CEH = []
     for x in data_CEH:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
-        if x[0] == '/':
+        if x[0:6] == '/* out':
             pTTs_CEH.append(read_pTT(x,S1Board,1,Sector))
     return(pTTs_CEE,pTTs_CEH)
