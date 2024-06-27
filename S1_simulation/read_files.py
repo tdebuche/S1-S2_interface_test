@@ -4,6 +4,7 @@ import math
 import numpy as np
 import awkward as ak
 from data_handle.tools import get_pTT_id,get_module_id
+import re
 
 
 def get_pTT_id_bis(Sector, S1Board, CEECEH, x):
@@ -19,17 +20,11 @@ def get_pTT_id_bis(Sector, S1Board, CEECEH, x):
     return get_pTT_id(Sector, S1Board, CEECEH,eta,phi)
     
 def get_moduleCEE(x,Sector):
-    start_cursor = 0
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    layer = int(x[start_cursor:end_cursor])
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    type = x[start_cursor:end_cursor]
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    u = int(x[start_cursor:end_cursor])
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    v = int(x[start_cursor:])
+    items = re.split(",", x)
+    layer = int(items[0])
+    type = items[1]
+    u = int(items[2])
+    v = int(items[3])
     module_id = get_module_id(Sector, layer, u, v)
     if type == 'Si': type = 'silicon'
     if type == 'Sc': type = 'scintillator'    
@@ -37,20 +32,12 @@ def get_moduleCEE(x,Sector):
                                                                                                                                                  
 
 def get_moduleCEH(x,Sector):
-    start_cursor = 0
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    layer = int(x[start_cursor:end_cursor])
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    type = x[start_cursor:end_cursor]
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    u = int(x[start_cursor:end_cursor])
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    end_cursor = x[start_cursor:].find(',') + start_cursor
-    v = int(x[start_cursor:end_cursor])
-    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    stc_idx = int(x[start_cursor:])
+    items = re.split(",", x)
+    layer = int(items[0])
+    type = items[1]
+    u = int(items[2])
+    v = int(items[3])
+    stc_idx = int(items[4]) 
     module_id = get_module_id(Sector, layer, u, v)
     if type == 'Si': type = 'silicon'
     if type == 'Sc': type = 'scintillator'
