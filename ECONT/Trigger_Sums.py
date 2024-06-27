@@ -46,8 +46,7 @@ def provide_unselected_ts(event):
          
     return(unselected_ts)
         
-def provide_STCs(event):
-    args = event.args
+def provide_STCs(args,event):
     HDorLD_list = create_list_HDorLD(args)
     STCs = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
