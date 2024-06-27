@@ -8,9 +8,10 @@ from collections import defaultdict
 
 def read_xml_plot(Edges,Sector):
     if Edges == 'yes':
-        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/AllocationpTTsEdges.xml')
+        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Allocation.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/AllocationpTTsNoEdges.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Allocation.xml')
+
         
     root = tree.getroot()
     data_pTT  = defaultdict(list)
@@ -30,9 +31,9 @@ def read_xml_plot(Edges,Sector):
 
     
     if Edges == 'yes':
-        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/DuplicationpTTsEdges.xml')
+        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Duplication.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/DuplicationpTTsNoEdges.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Duplication.xml')
         
     root = tree.getroot()
 
