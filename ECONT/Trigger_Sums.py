@@ -5,7 +5,7 @@ import numpy as np
 import awkward as ak
 from ECONT.read_nb_selected_TCs import get
 from data_handle.tools import getuvsector,get_module_id
-
+from ECONT.tools import create_list_HDorLD,get_STC_index_from_TC
 
 def provide_ts(event):
     ts = defaultdict(list)
@@ -47,6 +47,8 @@ def provide_unselected_ts(event):
     return(unselected_ts)
         
 def provide_STCs(event):
+    args = event.args
+    HDorLD_list = create_list_HDorLD(args)
     STCs = defaultdict(list)
     for module_idx in range(len(event.ds_si.good_tc_layer)):
         if event.ds_si.good_tc_layer[module_idx][0] > 26:   
