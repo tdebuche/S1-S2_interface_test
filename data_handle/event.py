@@ -8,7 +8,7 @@ from data_handle.tools import compress_value, printProgressBar, getuvsector
 from ECONT.Trigger_Sums import provide_ts, provide_unselected_ts,provide_STCs
 
 class EventData():
-    def __init__(args,self, ds_si, ds_sci, gen):
+    def __init__(self,args, ds_si, ds_sci, gen):
         self.args  = args
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
