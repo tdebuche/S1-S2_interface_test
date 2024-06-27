@@ -19,49 +19,49 @@ def get_pTT_id_bis(Sector, S1Board, CEECEH, x):
     S1Board = (int(S1Board[4],16)*16 + int(S1Board[5],16)) & 0x3F
     return get_pTT_id(Sector, S1Board, CEECEH,eta,phi)
     
-def get_moduleCEE(x,Sector):
-    items = re.split(",", x)
+def get_moduleCEE(items,Sector):
     layer = int(items[0])
     type = items[1]
     u = int(items[2])
     v = int(items[3])
+    energy = int(items[4])
     module_id = get_module_id(Sector, layer, u, v)
     if type == 'Si': type = 'silicon'
     if type == 'Sc': type = 'scintillator'    
-    return(module_id,layer,type,u,v)
+    return(module_id,layer,type,u,v,energy)
                                                                                                                                                  
 
-def get_moduleCEH(x,Sector):
-    items = re.split(",", x)
+def get_moduleCEH(items,Sector):
     layer = int(items[0])
     type = items[1]
     u = int(items[2])
     v = int(items[3])
-    stc_idx = int(items[4]) 
+    stc_idx = int(items[4])
+    energy = int(items[5])
     module_id = get_module_id(Sector, layer, u, v)
     if type == 'Si': type = 'silicon'
     if type == 'Sc': type = 'scintillator'
-    return(module_id,layer,type,u,v,stc_idx)
+    return(module_id,layer,type,u,v,stc_idx,energy)
 
 
 def read_pTT(x,S1Board,CEECEH,Sector):
+    for i in range(len(x)):
+        if x[i] == "(" or x[i] == ")":
+            x = x[0:i] + ',' + x[i+1:]
     if CEECEH==0:
         pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
     if CEECEH==1:
         pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'STCs':[]}
-    cursor = x.find('\t')+1
-    nb_module = int(x[cursor])
+    x= x[x.find('\t')+1:]
+    modules = re.split(",", x)
+    nb_module = int(modules[0])
     for k in range(nb_module): 
-        start_module = x[cursor:].find('(') +1 +cursor
-        end_module = x[cursor:].find(')')  +cursor
-        energy = x[end_module+1:end_module+1+x[end_module+1:].find(',')]
         if CEECEH==0:
-            module_id,layer,type,u,v = get_moduleCEE(x[start_module: end_module],Sector)
+            module_id,layer,type,u,v,energy = get_moduleCEE(modules[1+k*5: 1+k*5 +5],Sector)
             pTT['Modules'].append({'module_id' : module_id,'module_type' : type, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' : int(energy)})
         if CEECEH==1:
-            module_id,layer,type,u,v,stc_idx = get_moduleCEH(x[start_module: end_module],Sector) #,stc_idx
+            module_id,layer,type,u,v,stc_idx,energy = get_moduleCEH(modules[1+k*6: 1+k*6 +6],Sector) #,stc_idx
             pTT['STCs'].append({'module_id' : module_id,'module_type' : type,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc_idx ,'stc_energy' : int(energy)}) 
-        cursor = end_module+2+x[end_module+2:].find('(')
     return(pTT)
         
 def read_build_pTTs(args,Sector):
