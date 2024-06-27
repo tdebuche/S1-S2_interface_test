@@ -12,6 +12,7 @@ from S1_simulation.S1_simulator import create_pTTs
 from link_packing.packer_TCs import _TC_packer
 from link_packing.packer_pTTs import _pTT_packer
 from link_unpacking.plot_TTs import record_plot
+from link_unpacking.create_EMP import createEMPfile
 
 parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 
@@ -48,6 +49,9 @@ for idx, event in enumerate(events):
   
   #unpack and plot
   record_plot(event,args,'pTT_event'+str(idx))
+
+
   
-  #createEMPfile 
+  #createEMPfile
+  createEMPfile(event)
     
