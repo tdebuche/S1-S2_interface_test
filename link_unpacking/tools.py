@@ -25,3 +25,22 @@ def compress_value(value, exponent_bits=4, mantissa_bits=3, truncation_bits=0):
     compressed_value = ((1 << mantissa_bits) | mantissa) << (exponent - 1)
     compressed_code = (mantissa << exponent_bits) | exponent #(exponent << mantissa_bits) | mantissa
     return compressed_value, compressed_code
+
+
+def get_TC_numbering(u,v):
+    if u == 0:
+        return u+v
+    if u == 1:
+        return 3+u+v
+    if u == 2:
+        return 7+u+v
+    if u == 3:
+        return 12+u+v
+    if u == 4:
+        return 18+u+v
+    if u == 5:
+        return 24+u+v
+    if u == 6:
+        return 29+u+v
+    if u == 7:
+        return 33+u+v
