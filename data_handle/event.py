@@ -8,7 +8,8 @@ from data_handle.tools import compress_value, printProgressBar, getuvsector
 from ECONT.Trigger_Sums import provide_ts, provide_unselected_ts,provide_STCs
 
 class EventData():
-    def __init__(self, ds_si, ds_sci, gen):
+    def __init__(args,self, ds_si, ds_sci, gen):
+        self.args  = args
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
         self.ds_ts = provide_ts(self)
@@ -42,7 +43,7 @@ def apply_sort(df, counts, axis):
         df[field] = ak.unflatten(df[field], counts, axis)
     return df
     
-def provide_event(ev, gen):
+def provide_event(args,ev, gen):
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
     ev['MB_v'] = np.floor((ev.good_tc_cellv-1)/4)
     #ev = ev[[x for x in ak.fields(ev) if not x in ["good_tc_x","good_tc_y","good_tc_z"]]]
@@ -86,11 +87,11 @@ def provide_event(ev, gen):
     # sorting by transverse energy, simulating the ECONT_T
     sorted_sci = sorted_sci[ak.argsort(sorted_sci['good_tc_pt'], ascending=False)][0]
   
-    return EventData(sorted_si, sorted_sci,gen)
+    return EventData(args,sorted_si, sorted_sci,gen)
 
 
 
-def provide_events(n, particles, PU):
+def provide_events(args,n, particles, PU):
     base_path = cfg_particles['base_path']
     name_tree = cfg_particles[PU][particles]["tree"]
     filepath  = base_path + cfg_particles[PU][particles]["file"]
@@ -112,7 +113,7 @@ def provide_events(n, particles, PU):
     for ev in range(n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
       data_gen = tree.arrays(branches_gen, entry_start=ev, entry_stop=ev+1, library='ak')[0]
-      events_ds.append(provide_event(data, data_gen))
+      events_ds.append(provide_event(args,data, data_gen))
       printProgressBar(ev+1, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     return events_ds
          
