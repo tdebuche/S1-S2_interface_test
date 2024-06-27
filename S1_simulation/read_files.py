@@ -52,7 +52,7 @@ def read_pTT(x,S1Board,CEECEH,Sector):
         pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
     if CEECEH==1:
         pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'STCs':[]}
-    x= x[x.find('\t')+1:]
+    x= x[x.find('\t'):]
     modules = re.split(",", x)
     nb_module = int(modules[0])
     for k in range(nb_module): 
