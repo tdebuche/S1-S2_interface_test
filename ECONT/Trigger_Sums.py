@@ -56,7 +56,7 @@ def provide_STCs(args,event):
                                      event.ds_si.good_tc_waferu[module_idx][0],
                                      event.ds_si.good_tc_waferv[module_idx][0])
             module = get_module_id(sector,layer,u,v)
-            HDorLD =  HDorLD_list[(Layer,u,v)][0]
+            HDorLD =  HDorLD_list[(layer,u,v)][0]
             for stc_idx in range(len(event.ds_si.good_tc_layer[module_idx])):
                 cell_u,cell_v = event.ds_si.good_tc_cellu[module_idx][stc_idx],event.ds_si.good_tc_cellv[module_idx][stc_idx]
                 stc_index = get_STC_index_from_TC(HDorLD,cell_u,cell_v)
