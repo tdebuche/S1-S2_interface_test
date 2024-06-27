@@ -24,12 +24,16 @@ def get_moduleCEE(x,Sector):
     layer = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     end_cursor = x[start_cursor:].find(',') + start_cursor
+    type = x[start_cursor:end_cursor]
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    end_cursor = x[start_cursor:].find(',') + start_cursor
     u = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     v = int(x[start_cursor:])
     module_id = get_module_id(Sector, layer, u, v)
-    
-    return(module_id,layer,u,v)
+    if type == 'Si': type = 'silicon'
+    if type == 'Sc': type = 'scintillator'    
+    return(module_id,layer,type,u,v)
                                                                                                                                                  
 
 def get_moduleCEH(x,Sector):
@@ -38,15 +42,19 @@ def get_moduleCEH(x,Sector):
     layer = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     end_cursor = x[start_cursor:].find(',') + start_cursor
+    type = x[start_cursor:end_cursor]
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    end_cursor = x[start_cursor:].find(',') + start_cursor
     u = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     end_cursor = x[start_cursor:].find(',') + start_cursor
     v = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
-    stc = int(x[start_cursor:])
+    stc_idx = int(x[start_cursor:])
     module_id = get_module_id(Sector, layer, u, v)
-    
-    return(module_id,layer,u,v,stc)
+    if type == 'Si': type = 'silicon'
+    if type == 'Sc': type = 'scintillator'
+    return(module_id,layer,type,u,v,stc_idx)
 
 
 def read_pTT(x,S1Board,CEECEH,Sector):
@@ -58,11 +66,11 @@ def read_pTT(x,S1Board,CEECEH,Sector):
         end_module = x[cursor:].find(')')  +cursor
         energy = x[end_module+2:end_module+2+x[end_module+2:].find(',')]
         if CEECEH==0:
-            module_id,layer,u,v = get_moduleCEE(x[start_module: end_module],Sector)
-            pTT['Modules'].append({'module_id' : module_id, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' : int(energy)})
+            module_id,layer,type,u,v = get_moduleCEE(x[start_module: end_module],Sector)
+            pTT['Modules'].append({'module_id' : module_id,'module_type' : type, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' : int(energy)})
         if CEECEH==1:
-            module_id,layer,u,v = get_moduleCEE(x[start_module: end_module],Sector) #,stc_idx
-            pTT['Modules'].append({'module_id' : module_id,'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' : int(energy)}) #'stc_idx': stc_idx ,
+            module_id,layer,type,u,v,stc_idx = get_moduleCEH(x[start_module: end_module],Sector) #,stc_idx
+            pTT['Modules'].append({'module_id' : module_id,'module_type' : type,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc_idx ,'module_energy' : int(energy)}) 
         cursor = end_module+2+x[end_module+2:].find('(')
     return(pTT)
         
