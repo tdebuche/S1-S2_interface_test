@@ -47,7 +47,7 @@ def get_moduleCEH(items,Sector):
 def read_pTT(x,S1Board,CEECEH,Sector):
     for i in range(len(x)):
         if x[i] == "(" or x[i] == ")":
-            x = x[0:i] + ',' + x[i+1:]
+            x = x[0:i] + x[i+1:]
     if CEECEH==0:
         pTT = {'pTT' :get_pTT_id_bis(Sector,S1Board,CEECEH,x), 'Modules':[]}
     if CEECEH==1:
