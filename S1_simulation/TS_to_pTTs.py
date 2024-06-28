@@ -28,7 +28,7 @@ def build_pTTsCEH(stc_energy,args,S1pTTCEH):
         for stc_idx in range(len(STCs)):
             module_id = STCs[stc_idx]['module_id']
             stc_index = STCs[stc_idx]['stc_idx']
-            energy = ModulesCEH[module_idx]['stc_energy']
+            energy = STCs[module_idx]['stc_energy']
             if stc_energy[(module_id,stc_index)] != []:
                 energyCEH += stc_energy[(module_id,stc_index)][0]* energy/16
         pTTsCEH.append({'pTT_id' : pTT_id, 'energy': energyCEH})
