@@ -3,7 +3,7 @@ from link_unpacking.tools import compress_value
 def createEMPfile(event):
     pTTlinks = event.pTT_packer 
     
-    with open('/EMPfiles/S2_EMP_Input.txt', 'a') as file:   
+    with open('EMPfiles/S2_EMP_Input.txt', 'a') as file:   
       #write the first comments for the EMP file
         num_columns=56
         file.write(f"ID: x1 \n")
