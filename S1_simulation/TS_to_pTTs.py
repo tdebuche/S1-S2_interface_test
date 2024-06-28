@@ -31,5 +31,5 @@ def build_pTTsCEH(stc_energy,args,S1pTTCEH):
             energy = ModulesCEH[module_idx]['stc_energy']
             if stc_energy[(module_id,stc_index)] != []:
                 energyCEH += stc_energy[(module_id,stc_index)][0]* energy/16
-        pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEH})
+        pTTsCEH.append({'pTT_id' : pTT_id, 'energy': energyCEH})
     return(pTTsCEH)
