@@ -16,7 +16,7 @@ def provide_ts(event):
                                      event.ds_si.good_tc_waferu[module_idx][0],
                                      event.ds_si.good_tc_waferv[module_idx][0])
             module = get_module_id(sector,layer,u,v)
-            if event.ds_si.good_tc_layer[module_idx][0] < 27:   #change to 27 when STCs
+            if event.ds_si.good_tc_layer[module_idx][0] < 48:   #change to 27 when STCs
                 if ts[module] == []:
                     ts[module].append(0)
                 for idx in range(len(event.ds_si.good_tc_layer[module_idx])):
