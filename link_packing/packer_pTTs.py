@@ -16,7 +16,7 @@ def fill_links(pTTs,links,xml):
             else: 
                 #[print('error link is already filled',(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2), links[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)])
                 a += 1
-                print(a)
+    print(a)
         #else : print('error pTT has no allocation')
     #print(links)
             
