@@ -18,6 +18,7 @@ def fill_links(pTTs,links,xml):
                 a += 1
                 print(a)
         #else : print('error pTT has no allocation')
+    print(links)
             
 
 def _process_pTT_data(event,args,xml_allocation,xml_duplication):
