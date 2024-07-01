@@ -14,8 +14,16 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
             if ts_energy[module_id] != []:
                 energyCEE += ts_energy[module_id][0] * energy/16
         pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEE})
+        if pTT_id == "0x580014d":
+            print(ModulesCEE)
+            print(energyCEE)
+            for module_idx in range(len(ModulesCEE)):
+                module_id = ModulesCEE[module_idx]['module_id']
+                if ts_energy[module_id] != []:
+                   print( ts_energy[module_id][0])
             #if energyCEE != 0:
             #print({'pTT_id' : pTT_id, 'energy': energyCEE})
+    
     return(pTTsCEE)
 
 
