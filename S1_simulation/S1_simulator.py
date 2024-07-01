@@ -13,7 +13,9 @@ def create_pTTs(event,args,Sector):
     if args.Scenario == 'unselected_TS': ts = event.ds_unselected_ts
     STCs = event.ds_stc
     pTTs_CEE = build_pTTsCEE(ts, args, file_CEE)
+    print(pTTs_CEE)
     pTTs_CEH = build_pTTsCEH(STCs, args, file_CEH) 
+    print(pTTs_CEH)
     if args.Scenario == 'unselected_TS': 
         nb_selected_TCs = get()
         pTTs_CEE = add_TCs(pTTs_CEE,event.ds_si,nb_selected_TCs, Sector,'CEE')
