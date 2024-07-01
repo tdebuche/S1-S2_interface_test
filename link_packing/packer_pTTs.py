@@ -6,13 +6,17 @@ from link_packing.read_files import read_allocation_pTTs
 
 
 def fill_links(pTTs,links,xml):
+    a = 0
     for pTT_idx in range(len(pTTs)):
         pTT = pTTs[pTT_idx]['pTT_id']
         pTT_xml = xml[pTT]
         if pTT_xml != [] :    #if pTTs is allocated in the 4 links
             if links[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
                 links[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTs[pTT_idx]['energy'])
-            else: print('error link is already filled',(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2), links[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)])
+            else: 
+                print('error link is already filled',(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2), links[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)])
+                a += 1
+                prin(a)
         #else : print('error pTT has no allocation')
             
 
