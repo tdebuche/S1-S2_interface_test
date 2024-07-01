@@ -21,6 +21,7 @@ def provide_ts(event):
                     ts[module].append(0)
                 for idx in range(len(event.ds_si.good_tc_layer[module_idx])):
                     ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
+    print(ts)
     return(ts)
 
 
