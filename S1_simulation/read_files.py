@@ -95,5 +95,4 @@ def read_build_pTTs(args,Sector):
             S1Board = x[6:16]
         if x[0:6] == '/* out':
             pTTs_CEH.append(read_pTT(x,S1Board,1,Sector))
-    print(pTTs_CEE,pTTs_CEH)
     return(pTTs_CEE,pTTs_CEH)
