@@ -16,7 +16,7 @@ def get_pTT_energy(word,pTT_number):
         coded_energy = int(word[2:5],16) & 0x1fe
     energy_in_integer = unpack5E3M_ToInt(coded_energy)
     energy_in_GeV = unpackFloat_FromInt(energy_in_integer)
-    
+    return energy_in_GeV
 
 
 def unpack5E3M_ToInt(num): #Take 5E3M format and unpackpack it into integer
