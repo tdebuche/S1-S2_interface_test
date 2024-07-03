@@ -12,7 +12,7 @@ from S1_simulation.S1_simulator import create_pTTs
 from S1_packer.TC_packer import _TC_packer
 from S1_packer.pTT_packer import _pTT_packer
 from S2_unpacker.plot_TTs import record_plot
-from S2_unpacker.create_EMP import createEMPfile
+from S1_packer.create_EMP import createEMPfile
 
 parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 
