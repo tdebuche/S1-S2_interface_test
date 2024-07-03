@@ -12,7 +12,7 @@ def get_pTT_numbers(pTT):
 def get_pTT_energy(word,pTT_number):
     if pTT_number == 1:
         coded_energy = int(word[0:3],16) & 0x1fe
-    if pTT_number == 1:
+    if pTT_number == 0:
         coded_energy = int(word[2:5],16) & 0x1fe
     energy_in_integer = unpack5E3M_ToInt(coded_energy)
     energy_in_GeV = unpackFloat_FromInt(energy_in_integer)
