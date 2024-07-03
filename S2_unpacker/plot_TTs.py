@@ -25,12 +25,12 @@ def record_plot(event,args,title):
 
 
 
-def plot_EMPfile(args,event,EMPfile):
+def plot_EMPfile(args,EMPfile):
     pTT_allocation,TC_allocation = read_allocation(args.Edges,args.Sector)
     energiesCEE,energiesCEH = get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation)
     BinXY = create_bins(args)
-    createplot(args,event,energiesCEE,BinXY,None)
-    createplot(args,event,energiesCEH,BinXY,None)
+    createplot(args,None,energiesCEE,BinXY,None)
+    createplot(args,None,energiesCEH,BinXY,None)
 
 
 
