@@ -29,6 +29,10 @@ parser.add_argument('--Scenario', type=str, default='TS', help='Choose TS or uns
 parser.add_argument('--Sector',      type=int, default=0, help='Sector of S2 Board, only the sector 0 works')
 parser.add_argument('--Edges',   default = 'yes', help='20*24 or 20*28 bins')
 
+
+#plot from EMP
+parser.add_argument('--read_EMP',   default = 'no', help='plot with EMPfile')
+
 args = parser.parse_args()
 
 
