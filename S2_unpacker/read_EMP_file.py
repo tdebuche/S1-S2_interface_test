@@ -24,9 +24,10 @@ def read_allocation(Edges,Sector):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
-                    n_link = 14 + 14*math.floor(channel/2) + S1_index
-                    Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
+                    if pTT :
+                        n_link = 14 + 14*math.floor(channel/2) + S1_index
+                        Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
+                        pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
         S1_index += 1
 
     
@@ -45,12 +46,13 @@ def read_allocation(Edges,Sector):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
-                    if channel//2 == 4:
-                        n_link =  S1_index
-                    if channel//2 == 5:
-                        n_link = 70 + S1_index
-                    Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
+                    if pTT :
+                        if channel//2 == 4:
+                            n_link =  S1_index
+                        if channel//2 == 5:
+                            n_link = 70 + S1_index
+                        Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
+                        pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
                     
 
         S1_index += 1
@@ -105,7 +107,8 @@ def get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation):
             word = frame_element[2 + n_link *2 + 1]
             for pTT_number in range(2):
                 pTT_energy = get_pTT_energy(word,pTT_number)
-                Sector,S1Board,eta,phi,CEECEH = pTT_allocation[(frame_index,n_link,pTT_number)][0]
-                if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
-                if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
+                if pTT_allocation[(frame_index,n_link,pTT_number)]:
+                    Sector,S1Board,eta,phi,CEECEH = pTT_allocation[(frame_index,n_link,pTT_number)][0]
+                    if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
+                    if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
     return(energiesCEE,energiesCEH)
