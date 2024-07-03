@@ -75,7 +75,7 @@ def read_allocation(Edges,Sector):
     return pTT_allocation,data_TC
 
 
-def get_pTTs_from_links(args,EMPfile,pTT_allocation,TC_allocation):
+def get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation):
     Edges = args.Edges
     if Edges == 'yes': 
         nb_phi = 28
