@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-from S2_unpacker.unpack_links import create_energies
+from S2_unpacker.unpack_links import get_pTTs_from_links
 from S2_unpacker.unpack_links import read_pTT_allocation
 
 
@@ -14,9 +14,7 @@ from S2_unpacker.unpack_links import read_pTT_allocation
 def record_plot(event,args,title):
     data_links = event.pTT_packer
     etaphi_links = read_pTT_allocation(args.Edges,args.Sector)
-    energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
-    print(energiesCEE)
-    print(energiesCEH)
+    energiesCEE,energiesCEH = get_pTTs_from_links(data_links,etaphi_links,args)
     BinXY = create_bins(args)
     createplot(args,event,energiesCEE,BinXY,title+'CEE')
     createplot(args,event,energiesCEH,BinXY,title+'CEH')
