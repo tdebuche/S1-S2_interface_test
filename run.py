@@ -11,8 +11,9 @@ from data_handle.event import provide_events
 from S1_simulation.S1_simulator import create_pTTs
 from S1_packer.TC_packer import _TC_packer
 from S1_packer.pTT_packer import _pTT_packer
-from S2_unpacker.plot_TTs import record_plot
 from S1_packer.create_EMP import createEMPfile
+from S2_unpacker.plot_TTs import record_plot
+from S2_unpacker.plot_TTs import plot_EMPfile
 
 parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 
@@ -36,9 +37,17 @@ parser.add_argument('--read_EMP',   default = 'no', help='plot with EMPfile')
 args = parser.parse_args()
 
 
+
+
+#plot EMP
+if args.read_EMP == "yes":
+  args.n = 0 
+  plot_EMPfile(args,"Results/EMPfiles/EMP_S2_board_0.txt")
+
 events = provide_events(args,args.n, args.particles, args.pileup)
 
 #TS are created automatically
+
 
 for idx, event in enumerate(events):
   
@@ -56,7 +65,6 @@ for idx, event in enumerate(events):
   
   #unpack and plot
   record_plot(event,args,'pTT_event'+str(idx))
-
 
 
     
