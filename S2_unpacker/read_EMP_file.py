@@ -54,15 +54,26 @@ def read_allocation(Edges,Sector):
                     
 
         S1_index += 1
+
+
+    
+    tree = ET.parse('config_files/S1.ChannelAllocation.xml')
+    root = tree.getroot()
+    data_TC = defaultdict(list)
+    S1_index = 0
+    for s1_element in root.findall('.//S1'):
+        for channel_element in s1_element.findall('.//Channel'):
+            channel = int(channel_element.get('aux-id'))
+            for frame_element in channel_element.findall('.//Frame'):
+                if all(attr in frame_element.attrib for attr in ['id', 'column', 'Module']):
+                    frame  = int(frame_element.get('id'))
+                    module = hex(int(frame_element.get('Module'),16))
+                    n_link = 14 + 14*math.floor(channel/3) + S1_index
+                    index  = int(frame_element.get('index'))
+                    data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+        S1_index += 1
     return data_pTT
 
-def get_pTT_numbers(pTT):
-    S1Board = int(pTT[4:6],16) & 0x3F
-    phi = int(pTT,16) & 0x1F
-    eta = (int(pTT,16) & 0x3E0) //(16 * 2)
-    CEECEH = (int(pTT,16) & 0x400) //(16*16*4)
-    Sector = (int(pTT[2],16) &  0x6)//2
-    return(Sector,S1Board,eta,phi,CEECEH)
 
 def get_pTTs_from_EMPfile(data_links,etaphi_links,args):
     Edges = args.Edges
