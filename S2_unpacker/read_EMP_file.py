@@ -112,6 +112,6 @@ def get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation):
                 pTT_energy = get_pTT_energy(word,pTT_number)
                 if pTT_allocation[(frame_index,n_link,pTT_number)]:
                     Sector,S1Board,eta,phi,CEECEH = pTT_allocation[(frame_index,n_link,pTT_number)][0]
-                    if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
-                    if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
+                    #if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
+                    #if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
     return(energiesCEE,energiesCEH)
