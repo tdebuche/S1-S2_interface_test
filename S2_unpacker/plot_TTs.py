@@ -78,8 +78,8 @@ def createplot(args,event,energies,BinXY,title):
         eta_gen = str(round(event.eta_gen))
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         pt_gen  = str(round(event.pT_gen))
+        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     energy_cluster = energycluster(energies,etamax,phimax)
-    plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     if args.Edges == 'yes': Edges = 'Edges'
     if args.Edges == 'no': Edges = 'No_Edges'
     if args.read_EMP == "no":
