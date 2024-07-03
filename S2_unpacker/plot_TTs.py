@@ -7,6 +7,8 @@ from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from S2_unpacker.unpack_links import get_pTTs_from_links
 from S2_unpacker.unpack_links import read_pTT_allocation
+from S2_unpacker.read_EMP_file import read_allocation
+from S2_unpacker.read_EMP_file import get_pTTs_from_EMPfile
 
 
 
@@ -18,6 +20,19 @@ def record_plot(event,args,title):
     BinXY = create_bins(args)
     createplot(args,event,energiesCEE,BinXY,title+'CEE')
     createplot(args,event,energiesCEH,BinXY,title+'CEH')
+
+
+
+
+
+def plot_EMPfile(event,args,EMPfile):
+    pTT_allocation,TC_allocation = read_allocation(args.Edges,args.Sector)
+    energiesCEE,energiesCEH = get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation)
+    BinXY = create_bins(args)
+    createplot(args,event,energiesCEE,BinXY,title+'CEE')
+    createplot(args,event,energiesCEH,BinXY,title+'CEH')
+
+
 
 def createplot(args,event,energies,BinXY,title):
     x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
@@ -66,7 +81,10 @@ def createplot(args,event,energies,BinXY,title):
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     if args.Edges == 'yes': Edges = 'Edges'
     if args.Edges == 'no': Edges = 'No_Edges'
-    plt.savefig('Results/plot_pTTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
+    if args.read_EMP == "no":
+        plt.savefig('Results/plot_pTTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
+    if args.read_EMP == "yes":
+        plt.show()
 
 
 def create_bins(args):
