@@ -6,14 +6,14 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from link_unpacking.unpack_links import create_energies
-from link_unpacking.unpack_links import read_xml_plot
+from link_unpacking.unpack_links import read_pTT_allocation
 
 
 
 
 def record_plot(event,args,title):
     data_links = event.pTT_packer
-    etaphi_links = read_xml_plot(args.Edges,args.Sector)
+    etaphi_links = read_pTT_allocation(args.Edges,args.Sector)
     energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
     print(energiesCEE)
     print(energiesCEH)
