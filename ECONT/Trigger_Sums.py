@@ -41,8 +41,8 @@ def provide_unselected_ts(event):
                 if nb_selected_TCs[module_alloc]:
                     for idx in range(nb_selected_TCs[module_alloc][0],len(event.ds_si.good_tc_layer[module_idx])):
                         unselected_ts[module][0] += event.ds_si.good_tc_pt[module_idx][idx]
-                if not nb_selected_TCs[module_alloc]:
-                    print('not allocated = ',sector, layer,u,v) #see the differences in geometries
+                #if not nb_selected_TCs[module_alloc]:
+                    #print('not allocated = ',sector, layer,u,v) #see the differences in geometries
          
     return(unselected_ts)
         
