@@ -46,7 +46,7 @@ for idx, event in enumerate(events):
   #packing
   _TC_packer(event,args)
   _pTT_packer(event,args)
-  
+  print(event.TC_packer)
   #unpack and plot
   record_plot(event,args,'pTT_event'+str(idx))
 
