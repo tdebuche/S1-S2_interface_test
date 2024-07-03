@@ -3,7 +3,7 @@ import math
 import numpy as np
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-
+from S2_unpacker.tools import *
 
 
 def read_allocation(Edges,Sector):
