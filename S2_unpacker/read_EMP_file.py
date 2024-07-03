@@ -27,9 +27,6 @@ def read_allocation(Edges,Sector):
                     if pTT :
                         n_link = 14 + 14*math.floor(channel/2) + S1_index
                         Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                        if not type(CEECEH)is int: 
-                            print(Sector,S1Board,eta,phi,CEECEH )
-                            print(frame,n_link,channel%2)
                         pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
         S1_index += 1
 
@@ -112,6 +109,10 @@ def get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation):
                 #pTT_energy = get_pTT_energy(word,pTT_number)
                 if pTT_allocation[(frame_index,n_link,pTT_number)]:
                     Sector,S1Board,eta,phi,CEECEH = pTT_allocation[(frame_index,n_link,pTT_number)][0]
+                    if not type(CEECEH)is int: 
+                            print(Sector,S1Board,eta,phi,CEECEH )
+                            print(pTT_allocation[(frame_index,n_link,pTT_number)][0])
+                            print(frame_index,n_link,pTT_number)
                     #if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
                     #if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
     return(energiesCEE,energiesCEH)
