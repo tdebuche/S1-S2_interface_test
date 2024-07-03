@@ -5,8 +5,8 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-from link_unpacking.unpack_links import create_energies
-from link_unpacking.unpack_links import read_pTT_allocation
+from S2_unpacker.unpack_links import create_energies
+from S2_unpacker.unpack_links import read_pTT_allocation
 
 
 
@@ -68,7 +68,7 @@ def createplot(args,event,energies,BinXY,title):
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     if args.Edges == 'yes': Edges = 'Edges'
     if args.Edges == 'no': Edges = 'No_Edges'
-    plt.savefig('plot_pTTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
+    plt.savefig('Results/plot_pTTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
 
 
 def create_bins(args):
