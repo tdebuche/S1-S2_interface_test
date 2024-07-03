@@ -14,7 +14,7 @@ from S2_unpacker.unpack_links import read_pTT_allocation
 def record_plot(event,args,title):
     data_links = event.pTT_packer
     reversed_pTT_allocation = read_pTT_allocation(args.Edges,args.Sector)
-    energiesCEE,energiesCEH = get_pTTs_from_links(data_links,reversed_pTT_allocation,args)
+    energiesCEE,energiesCEH = get_pTTs_from_links(args,data_links,reversed_pTT_allocation)
     BinXY = create_bins(args)
     createplot(args,event,energiesCEE,BinXY,title+'CEE')
     createplot(args,event,energiesCEH,BinXY,title+'CEH')
