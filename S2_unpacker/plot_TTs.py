@@ -25,7 +25,7 @@ def record_plot(event,args,title):
 
 
 
-def plot_EMPfile(event,args,EMPfile):
+def plot_EMPfile(args,EMPfile):
     pTT_allocation,TC_allocation = read_allocation(args.Edges,args.Sector)
     energiesCEE,energiesCEH = get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation)
     BinXY = create_bins(args)
