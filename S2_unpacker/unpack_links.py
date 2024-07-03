@@ -58,7 +58,7 @@ def read_pTT_allocation(Edges,Sector):
     return data_pTT
 
 
-def get_pTTs_from_links(data_links,etaphi_links,args):
+def get_pTTs_from_links(args,data_links,reversed_pTT_allocation):
     Edges = args.Edges
     if Edges == 'yes': 
         nb_phi = 28
