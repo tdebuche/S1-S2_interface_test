@@ -25,6 +25,8 @@ def unpack5E3M_ToInt(num): #Take 5E3M format and unpackpack it into integer
     e = ((num>>3)&0x1f);#Read first 5 bits from the input number to read the exponent
     m = ((num   )&0x07);#Read the last 3 bits as mantissa
     #print(e,m)
+    if e == 31:
+        return 0
 
     if(e==0):
         return m
