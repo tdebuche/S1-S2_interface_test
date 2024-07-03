@@ -27,6 +27,9 @@ def read_allocation(Edges,Sector):
                     if pTT :
                         n_link = 14 + 14*math.floor(channel/2) + S1_index
                         Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
+                        if CEECEH.type() == 'NoneType' : 
+                            print(Sector,S1Board,eta,phi,CEECEH )
+                            print(frame,n_link,channel%2)
                         pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
         S1_index += 1
 
