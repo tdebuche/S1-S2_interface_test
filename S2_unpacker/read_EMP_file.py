@@ -64,7 +64,7 @@ def get_pTT_numbers(pTT):
     Sector = (int(pTT[2],16) &  0x6)//2
     return(Sector,S1Board,eta,phi,CEECEH)
 
-def get_pTTs_from_links(data_links,etaphi_links,args):
+def get_pTTs_from_EMPfile(data_links,etaphi_links,args):
     Edges = args.Edges
     if Edges == 'yes': 
         nb_phi = 28
