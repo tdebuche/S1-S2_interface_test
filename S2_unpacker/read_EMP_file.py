@@ -70,9 +70,9 @@ def read_allocation(Edges,Sector):
                     module = hex(int(frame_element.get('Module'),16))
                     n_link = 14 + 14*math.floor(channel/3) + S1_index
                     index  = int(frame_element.get('index'))
-                    data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+                    data_TC[(module,index)].append((frame,n_link,channel%2))
         S1_index += 1
-    return data_pTT
+    return data_pTT,data_TC
 
 
 def get_pTTs_from_EMPfile(data_links,etaphi_links,args):
