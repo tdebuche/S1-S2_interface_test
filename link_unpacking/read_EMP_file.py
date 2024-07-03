@@ -6,7 +6,7 @@ from collections import defaultdict
 
 
 
-def read_pTT_allocation(Edges,Sector):
+def read_allocation(Edges,Sector):
     if Edges == 'yes':
         tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Allocation.xml')
     if Edges == 'no':
