@@ -5,3 +5,9 @@ def get_pTT_numbers(pTT):
     CEECEH = (int(pTT,16) & 0x400) //(16*16*4)
     Sector = (int(pTT[2],16) &  0x6)//2
     return(Sector,S1Board,eta,phi,CEECEH)
+
+
+
+
+def get_pTT_energy(word,pTT_number):
+    
