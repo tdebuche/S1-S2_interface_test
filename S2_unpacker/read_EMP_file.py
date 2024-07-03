@@ -75,7 +75,37 @@ def read_allocation(Edges,Sector):
     return pTT_allocation,data_TC
 
 
-def get_pTTs_from_links(args,data_links,reversed_pTT_allocation):
+def get_pTTs_from_links(args,EMPfile,pTT_allocation,TC_allocation):
+    Edges = args.Edges
+    if Edges == 'yes': 
+        nb_phi = 28
+        offset = 3
+    else : 
+        nb_phi = 24
+        offset = 0
     energiesCEE = [[0 for phi in range(36)]for eta in range(20)]
     energiesCEH = [[0 for phi in range(36)]for eta in range(20)]
+    EMP_file = open(EMPfile, 'r')
+    lines = EMP_file.readlines()
+    EMP_file.close()
+    EMP_data = []
+    for line in lines:
+        EMP_data.append(line.split())
+    for frame_idx in range(1,len(EMP_data)):
+        frame_element = EMP_data[frame_idx]
+        frame_index =  int(frame_element[1])
+        if frame_element[0] != 'Frame':
+            print('not a frame element')
+        if (len(frame_element)//2 - 1) != 84:
+            print( 'not the true link number')
+        for n_link in range(len(frame_element)//2-1):
+            header = frame_element[2 + n_link *2]
+            if (header != "1101" and frame_index == 0) or (header != "0001" and frame_index != 0 and frame_index != 107) or (header != "0011" and frame_index == 107):
+                print('wrong header')
+            word = frame_element[2 + n_link *2 + 1]
+            for pTT_number in range(2):
+                pTT_energy = get_pTT_energy(word,pTT_number)
+                Sector,S1Board,eta,phi,CEECEH = pTT_allocation(frame,n_link,pTT_number)
+                if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
+                if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
     return(energiesCEE,energiesCEH)
