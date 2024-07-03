@@ -9,10 +9,10 @@ import numpy as np
 
 from data_handle.event import provide_events
 from S1_simulation.S1_simulator import create_pTTs
-from link_packing.packer_TCs import _TC_packer
-from link_packing.packer_pTTs import _pTT_packer
-from link_unpacking.plot_TTs import record_plot
-from link_unpacking.create_EMP import createEMPfile
+from S1_packer.TC_packer import _TC_packer
+from S1_packer.pTT_packer import _pTT_packer
+from S2_unpacker.plot_TTs import record_plot
+from S2_unpacker.create_EMP import createEMPfile
 
 parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 
