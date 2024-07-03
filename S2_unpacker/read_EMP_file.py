@@ -14,7 +14,7 @@ def read_allocation(Edges,Sector):
 
         
     root = tree.getroot()
-    reversed_pTT_allocation  = defaultdict(list)
+    pTT_allocation  = defaultdict(list)
 
     S1_index = 0
     for s1_element in root.findall('.//S1'):
@@ -26,7 +26,7 @@ def read_allocation(Edges,Sector):
                     pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
                     Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    reversed_pTT_allocation[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+                    pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
         S1_index += 1
 
     
@@ -50,7 +50,7 @@ def read_allocation(Edges,Sector):
                     if channel//2 == 5:
                         n_link = 70 + S1_index
                     Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    reversed_pTT_allocation[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+                    pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
                     
 
         S1_index += 1
@@ -70,50 +70,12 @@ def read_allocation(Edges,Sector):
                     module = hex(int(frame_element.get('Module'),16))
                     n_link = 14 + 14*math.floor(channel/3) + S1_index
                     index  = int(frame_element.get('index'))
-                    data_TC[(module,index)].append((frame,n_link,channel%2))
+                    data_TC[(frame,n_link,channel%2)].append((module,index))
         S1_index += 1
-    return reversed_pTT_allocation,data_TC
+    return pTT_allocation,data_TC
 
 
 def get_pTTs_from_links(args,data_links,reversed_pTT_allocation):
-    Edges = args.Edges
-    if Edges == 'yes': 
-        nb_phi = 28
-        offset = 3
-    else : 
-        nb_phi = 24
-        offset = 0
-        
-    Sector = args.Sector
     energiesCEE = [[0 for phi in range(36)]for eta in range(20)]
-    for S1Board in range(14):
-        for eta in range(20):
-            for phi in range(36):
-                if reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,0)] != []:
-                    if data_links[reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,0)][0]] != []:
-                        energiesCEE[eta][phi] += data_links[reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,0)][0]][0]
-                        #energies[eta][phi] += 1
-    for S1Board in range(14):
-        for eta in range(20):
-            for phi in range(36):
-                if reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,0)] != []:
-                    if data_links[reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,0)][0]] != []:
-                        energiesCEE[eta][phi] += data_links[reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,0)][0]][0]
-                        #energies[eta][phi] += 1
-    
     energiesCEH = [[0 for phi in range(36)]for eta in range(20)]
-    for S1Board in range(14):
-        for eta in range(20):
-            for phi in range(36):
-                if reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,1)] != []:
-                    if data_links[reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,1)][0]] != []:
-                        energiesCEH[eta][phi] += data_links[reversed_pTT_allocation[(Sector,S1Board,eta,phi+offset,1)][0]][0]
-                        #energies[eta][phi] += 1
-    for S1Board in range(14):
-        for eta in range(20):
-            for phi in range(36):
-                if reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,1)] != []:
-                    if data_links[reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,1)][0]] != []:
-                        energiesCEH[eta][phi] += data_links[reversed_pTT_allocation[(Sector+1,S1Board,eta,phi-24+offset,1)][0]][0]
-                        #energies[eta][phi] += 1
     return(energiesCEE,energiesCEH)
