@@ -35,7 +35,6 @@ def plot_EMPfile(args,event,EMPfile):
 
 
 def createplot(args,event,energies,BinXY,title):
-    x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
     plt.figure(figsize = (20,8))
     X =[]
     Y = []
@@ -72,11 +71,13 @@ def createplot(args,event,energies,BinXY,title):
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
-    if (event.phi_gen < np.pi) and (event.phi_gen > 0):
-        plt.scatter(x,y,c = 'red', marker = 'x')
-    eta_gen = str(round(event.eta_gen))
-    phi_gen = str(round(event.phi_gen/np.pi * 180))
-    pt_gen  = str(round(event.pT_gen))
+    if event:
+        x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
+        if (event.phi_gen < np.pi) and (event.phi_gen > 0):
+            plt.scatter(x,y,c = 'red', marker = 'x')
+        eta_gen = str(round(event.eta_gen))
+        phi_gen = str(round(event.phi_gen/np.pi * 180))
+        pt_gen  = str(round(event.pT_gen))
     energy_cluster = energycluster(energies,etamax,phimax)
     plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     if args.Edges == 'yes': Edges = 'Edges'
