@@ -29,8 +29,8 @@ def plot_EMPfile(args,EMPfile):
     pTT_allocation,TC_allocation = read_allocation(args.Edges,args.Sector)
     energiesCEE,energiesCEH = get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation)
     BinXY = create_bins(args)
-    createplot(args,event,energiesCEE,BinXY,title+'CEE')
-    createplot(args,event,energiesCEH,BinXY,title+'CEH')
+    createplot(args,None,energiesCEE,BinXY,title+'CEE')
+    createplot(args,None,energiesCEH,BinXY,title+'CEH')
 
 
 
