@@ -30,7 +30,7 @@ def word(pTTlinks,frame_idx,nb_link):
     energypTT0 = 0
     if pTTlinks[(frame_idx,nb_link,0)] != []:
         energypTT0 = pTTlinks[(frame_idx,nb_link,0)][0]
-    value_energy1, code_energy1 = pack5E3M_FromInt(packInt_FromFloat(energypTT1))
+    value_energy0, code_energy0 = pack5E3M_FromInt(packInt_FromFloat(energypTT0))
     #value_energy0, code_energy0 = compress_value(energypTT0,5,3,0)
     energypTT1 = 0
     if pTTlinks[(frame_idx,nb_link,1)] != []:
