@@ -5,7 +5,7 @@ def createEMPfile(event):
     
     with open('Results/EMPfiles/S2_EMP_Input.txt', 'a') as file:   
       #write the first comments for the EMP file
-        num_columns=56
+        num_columns=84
         file.write(f"ID: x1 \n")
         file.write(f"Metadata: (strobe,) start of orbit, start of packet, end of packet, valid \n \n")
         column_str = '                    '.join(str(j).zfill(3) for j in range(num_columns))
