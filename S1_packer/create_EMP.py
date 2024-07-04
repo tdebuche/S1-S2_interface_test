@@ -1,4 +1,4 @@
-from S1_packer.tools import compress_value
+from S1_packer.tools import *
 
 def createEMPfile(event):
     pTTlinks = event.pTT_packer 
