@@ -8,8 +8,8 @@ def createEMPfile(event):
     with open('Results/EMPfiles/S2_EMP_Input.txt', 'a') as file:   
       #write the first comments for the EMP file
         num_columns=84
-        file.write(f"ID: x1 \n")
-        file.write(f"Metadata: (strobe,) start of orbit, start of packet, end of packet, valid \n \n")
+        #file.write(f"ID: x1 \n")
+        #file.write(f"Metadata: (strobe,) start of orbit, start of packet, end of packet, valid \n \n")
         column_str = '                    '.join(str(n_link).zfill(3) for n_link in range(num_columns))
         file.write(f"      Link            {column_str}\n")
         for frame_idx in range(108):
