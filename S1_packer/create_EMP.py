@@ -2,7 +2,9 @@ from S1_packer.tools import compress_value
 
 def createEMPfile(event):
     pTTlinks = event.pTT_packer 
-    
+    file = open("Results/EMPfiles/S2_EMP_Input.txt", "w")
+    file.write('')
+    file.close()
     with open('Results/EMPfiles/S2_EMP_Input.txt', 'a') as file:   
       #write the first comments for the EMP file
         num_columns=84
