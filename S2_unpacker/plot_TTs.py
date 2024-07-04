@@ -70,6 +70,7 @@ def createplot(args,event,energies,BinXY,title):
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
+    energy_cluster = energycluster(energies,etamax,phimax)
     if event:
         x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
         if (event.phi_gen < np.pi) and (event.phi_gen > 0):
@@ -78,7 +79,6 @@ def createplot(args,event,energies,BinXY,title):
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         pt_gen  = str(round(event.pT_gen))
         plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
-    energy_cluster = energycluster(energies,etamax,phimax)
     if args.Edges == 'yes': Edges = 'Edges'
     if args.Edges == 'no': Edges = 'No_Edges'
     if args.read_EMP == "no":
