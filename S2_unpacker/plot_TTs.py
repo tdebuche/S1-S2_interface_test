@@ -67,7 +67,7 @@ def createplot(args,event,energies,BinXY,title):
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res]+1)/np.log(max(weightmax,5)+1)))
+            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res]+1)/np.log(max(weightmax,5))))
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
