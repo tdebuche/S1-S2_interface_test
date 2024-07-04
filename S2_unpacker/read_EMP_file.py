@@ -8,9 +8,9 @@ from S2_unpacker.tools import *
 
 def read_allocation(Edges,Sector):
     if Edges == 'yes':
-        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Allocation.xml')
+        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+Sector+'Allocation.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Allocation.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+Sector+'Allocation.xml')
 
         
     root = tree.getroot()
