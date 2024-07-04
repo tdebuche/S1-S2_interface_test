@@ -35,7 +35,7 @@ def word(pTTlinks,frame_idx,nb_link):
     energypTT1 = 0
     if pTTlinks[(frame_idx,nb_link,1)] != []:
         energypTT1 = pTTlinks[(frame_idx,nb_link,1)][0]
-    code_energy1 = pack5E3M_FromInt(packInt_FromFloat(energypTT0))
+    code_energy1 = pack5E3M_FromInt(packInt_FromFloat(energypTT1))
     #value_energy1, code_energy1 = compress_value(energypTT1*10000,5,3,0)
     return(hex(0x0000000000000000|(code_energy1) << 53 | (code_energy0)<< 45))
     
