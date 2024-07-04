@@ -8,7 +8,7 @@ def createEMPfile(event):
         num_columns=84
         file.write(f"ID: x1 \n")
         file.write(f"Metadata: (strobe,) start of orbit, start of packet, end of packet, valid \n \n")
-        column_str = '                    '.join(str(j).zfill(3) for j in range(num_columns))
+        column_str = '                    '.join(str(n_link).zfill(3) for n_link in range(num_columns))
         file.write(f"      Link            {column_str}\n")
         for frame_idx in range(108):
             if frame_idx == 0:
@@ -19,7 +19,7 @@ def createEMPfile(event):
                 metadata = 11
             
             frame = 'Frame '+ str(frame_idx).zfill(4).rjust(4) + "    " 
-            frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{int(word(pTTlinks,frame_idx,j),16):016x}' ) + " " for j in range(84))
+            frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{int(word(pTTlinks,frame_idx,n_link),16):016x}' ) + " " for n_link in range(84))
             #frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{0:016x}' ) + " " for j in range(84))
             file.write(f" {frame} \n")
         file.close()
