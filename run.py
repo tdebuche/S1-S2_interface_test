@@ -42,7 +42,7 @@ args = parser.parse_args()
 #plot EMP
 if args.read_EMP == "yes":
   args.n = 0 
-  plot_EMPfile(args,"Results/EMPfiles/S2_EMP_Input.txt")
+  plot_EMPfile(args,"Results/EMPfiles/EMP_S2_board_0.txt.txt")
 
 events = provide_events(args,args.n, args.particles, args.pileup)
 
