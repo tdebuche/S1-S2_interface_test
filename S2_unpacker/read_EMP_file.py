@@ -34,7 +34,7 @@ def read_allocation(Edges,Sector):
     if Edges == 'yes':
         tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+str(Sector)+'/Allocation.xml')
     if Edges == 'no':
-        tree = ET.parse(''config_files/pTT_allocation/24_phi_bins/Sector'+str(Sector)+'/Duplication.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+str(Sector)+'/Duplication.xml')
         
     root = tree.getroot()
 
