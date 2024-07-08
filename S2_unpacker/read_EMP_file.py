@@ -8,9 +8,9 @@ from S2_unpacker.tools import *
 
 def read_allocation(Edges,Sector):
     if Edges == 'yes':
-        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+str(Sector)+'/Allocation.xml')
+        tree = ET.parse('config_files/pTT_allocation/28_Phi_Bins/Sector'+str(Sector)+'/Allocation.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+str(Sector)+'/Allocation.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_Phi_Bins/Sector'+str(Sector)+'/Allocation.xml')
 
         
     root = tree.getroot()
@@ -25,16 +25,16 @@ def read_allocation(Edges,Sector):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
                     if pTT :
-                        n_link = 14 + 14*math.floor(channel/2) + S1_index
+                        n_link = 14*math.floor(channel/2) + S1_index
                         Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
                         pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
         S1_index += 1
 
     
     if Edges == 'yes':
-        tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+str(Sector)+'/Allocation.xml')
+        tree = ET.parse('config_files/pTT_allocation/28_Phi_Bins/Sector'+str(Sector)+'/Duplication.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+str(Sector)+'/Duplication.xml')
+        tree = ET.parse('config_files/pTT_allocation/24_Phi_Bins/Sector'+str(Sector)+'/Duplication.xml')
         
     root = tree.getroot()
 
@@ -47,10 +47,7 @@ def read_allocation(Edges,Sector):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
                     if pTT :
-                        if channel//2 == 4:
-                            n_link =  S1_index
-                        if channel//2 == 5:
-                            n_link = 70 + S1_index
+                        n_link =  14*math.floor(channel/2) + S1_index                        
                         Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
                         pTT_allocation[(frame,n_link,channel%2)].append((Sector,S1Board,eta,phi,CEECEH))
                     
@@ -110,7 +107,7 @@ def get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation):
                 if pTT_energy < 0 :pTT_energy = 0
                 if pTT_allocation[(frame_index,n_link,pTT_number)]:
                     Sector,S1Board,eta,phi,CEECEH = pTT_allocation[(frame_index,n_link,pTT_number)][0]
-                    if eta == 19 and CEECEH == 0: print(S1Board,eta,phi,word,pTT_number,pTT_energy)
+                    if frame_index == 2 and n_link == 26: print(S1Board,eta,phi,word,pTT_number,pTT_energy)
                     if CEECEH == 0: energiesCEE[eta][phi-offset + Sector*24] += pTT_energy
                     if CEECEH == 1: energiesCEH[eta][phi-offset + Sector*24] += pTT_energy
     #print(energiesCEE,energiesCEH)
