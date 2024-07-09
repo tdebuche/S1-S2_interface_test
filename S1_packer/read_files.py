@@ -69,14 +69,14 @@ def MB_geometry():
 def read_allocation_pTTs(Edges,Sector,nb_links):
     if Edges == 'yes':
         if nb_links == 4:
-            tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+Sector+'/Allocation.xml')
+            tree = ET.parse('config_files/pTT_allocation/28_Phi_Bins/Sector'+str(Sector)+'/Allocation.xml')
         if nb_links == 2:
-            tree = ET.parse('config_files/pTT_allocation/28_phi_bins/Sector'+Sector+'Duplication.xml')
+            tree = ET.parse('config_files/pTT_allocation/28_Phi_Bins/Sector'+str(Sector)+'/Duplication.xml')
     if Edges == 'no':
         if nb_links == 4:
-            tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+Sector+'Allocation.xml')
+            tree = ET.parse('config_files/pTT_allocation/24_Phi_Bins/Sector'+str(Sector)+'/Allocation.xml')
         if nb_links == 2:
-            tree = ET.parse('config_files/pTT_allocation/24_phi_bins/Sector'+Sector+'Duplication.xml')
+            tree = ET.parse('config_files/pTT_allocation/24_Phi_Bins/Sector'+str(Sector)+'/Duplication.xml')
         
     root = tree.getroot()
     reversed_data_pTT  = defaultdict(list)

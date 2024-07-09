@@ -1,77 +1,134 @@
 import numpy as np
 import math
-import os
 import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
+import json
+from shapely.geometry import Polygon
 from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-from S2_unpacker.unpack_links import get_pTTs_from_links
-from S2_unpacker.unpack_links import read_pTT_allocation
-from S2_unpacker.read_EMP_file import read_allocation
-from S2_unpacker.read_EMP_file import get_pTTs_from_EMPfile
-
+from S2_unpacker.unpack_python_links import get_pTTs_from_links
+from S2_unpacker.unpack_EMP_file import get_pTTs_from_EMPfile
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 
 def record_plot(event,args,title):
-    data_links = event.pTT_packer
-    reversed_pTT_allocation = read_pTT_allocation(args.Edges,args.Sector)
-    energiesCEE,energiesCEH = get_pTTs_from_links(args,data_links,reversed_pTT_allocation)
-    BinXY = create_bins(args)
-    createplot(args,event,energiesCEE,BinXY,title+'CEE')
-    createplot(args,event,energiesCEH,BinXY,title+'CEH')
+
+    if args.whole_endcap == 'no':
+        if args.read_EMP == 'no':
+            CEE_TTs,CEH_TTs= get_pTTs_from_links(args,event,args.Sector)
+        if args.read_EMP == 'yes':
+            CEE_TTs,CEH_TTs= get_pTTs_from_EMPfile(args,args.Sector)
+
+        createplot_single_sector(args,event,CEE_TTs,title+'CEE')
+        #createplot_single_sector(args,event,CEH_TTs,title+'CEH')
+
+
+    if args.whole_endcap == 'yes':
+        if args.read_EMP == 'no':
+            S0_CEE_TTs,S0_CEH_TTs= get_pTTs_from_links(args,event,0)
+            S1_CEE_TTs,S1_CEH_TTs= get_pTTs_from_links(args,event,1)
+            S2_CEE_TTs,S2_CEH_TTs= get_pTTs_from_links(args,event,2)
+        if args.read_EMP == 'yes':
+            S0_CEE_TTs,S0_CEH_TTs= get_pTTs_from_EMPfile(args,0)
+            S1_CEE_TTs,S1_CEH_TTs= get_pTTs_from_EMPfile(args,2)
+            S2_CEE_TTs,S2_CEH_TTs= get_pTTs_from_EMPfile(args,1)
+
+        createplot_whole_endcap(args,event, S0_CEE_TTs, S1_CEE_TTs, S2_CEE_TTs,title+'CEE')
+        #createplot_whole_endcap(args,event, S0_CEE_TTs, S1_CEH_TTs, S2_CEH_TTs,title+'CEH')
 
 
 
+def createplot_single_sector(args,event,TTs,title):
+    if args.Edges == 'yes':
+        geojson_files = "config_files/Geometry/all_endcap_2028_Bins.json"
+    if args.Edges == 'no':
+        geojson_files = "config_files/Geometry/all_endcap_2024_Bins.json"
+
+    with open(geojson_files, 'r') as f:
+        bins = json.load(f)['Bins']
+
+    fig,ax = plt.subplots(figsize=(11, 10))
+    cmap = white_viridis
+    #norm = plt.Normalize(vmin=0, vmax=max(np.log(np.max(np.array(TTs))),np.log(5)))
+    norm = plt.Normalize(vmin=0, vmax=np.max(np.array(TTs)))
+    colorbar = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+    colorbar.set_array([])
+
+    for bin_index in range(len(bins)):
+        eta = bins[bin_index]["S2_coordinates"]['eta_index']
+        phi = bins[bin_index]["S2_coordinates"]['phi_index']
+        S2_Sector = bins[bin_index]["S2_coordinates"]['Sector']
+        bin_geometry = pointtopolygon([bins[bin_index]['verticesX'],bins[bin_index]['verticesY']])
+        if S2_Sector == args.Sector :
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(TTs[eta][phi]))
+            #plt.fill(*bin_geometry.exterior.xy, color='red')
+            #plt.annotate(phi,(bins[bin_index]['verticesX'][0],bins[bin_index]['verticesY'][0]))
+
+        plt.plot(*bin_geometry.exterior.xy, color='black', linewidth=0.5)
+    etamax,phimax = np.unravel_index(np.array(TTs).argmax(), np.array(TTs).shape)
+    energy_cluster = energycluster(TTs,etamax,phimax)
+    if event:
+        x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
+        plt.scatter(x,y,c = 'red', marker = 'x')
+        eta_gen = str(round(event.eta_gen))
+        phi_gen = str(round(event.phi_gen/np.pi * 180))
+        pt_gen  = str(round(event.pT_gen))
+        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
+        if args.Edges == 'yes': Edges = 'Edges'
+        if args.Edges == 'no': Edges = 'No_Edges'
+        #plt.savefig('Results/plot_TTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
+    else:
+        plt.title('pt_cluster ='+str(round(energy_cluster)))
+        #plt.savefig('Results/plot_TTs/from_EMP/'+title+'.png')
+
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.04)
+    plt.colorbar(colorbar,cax = cax )
+    plt.show()
 
 
-def plot_EMPfile(args,EMPfile):
-    pTT_allocation,TC_allocation = read_allocation(args.Edges,args.Sector)
-    energiesCEE,energiesCEH = get_pTTs_from_EMPfile(args,EMPfile,pTT_allocation,TC_allocation)
-    BinXY = create_bins(args)
-    createplot(args,None,energiesCEE,BinXY,None)
-    createplot(args,None,energiesCEH,BinXY,None)
 
+def createplot_whole_endcap(args,event,S0_TTs, S1_TTs, S2_TTs,title):
+    if args.Edges == 'yes':
+        geojson_files = "config_files/Geometry/all_endcap_2028_Bins.json"
+    if args.Edges == 'no':
+        geojson_files = "config_files/Geometry/all_endcap_2024_Bins.json"
 
+    with open(geojson_files, 'r') as f:
+        bins = json.load(f)['Bins']
+    fig,ax = plt.subplots(figsize=(11, 10))
+    cmap = white_viridis
+    #norm = plt.Normalize(vmin=0, vmax=max(np.log(np.max(np.array([S0_TTs,S1_TTs,S2_TTs]))),np.log(5)))
+    norm = plt.Normalize(vmin=0, vmax=np.max(np.array([S0_TTs,S1_TTs,S2_TTs])))
+    colorbar = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+    colorbar.set_array([])
 
-def createplot(args,event,energies,BinXY,title):
-    plt.figure(figsize = (20,8))
-    X =[]
-    Y = []
-    pointXY = [[],[]]
-    weights = []
-    weightmax = 0
-    etamax = 0
-    phimax = 0
-    for eta in range(len(BinXY)):
-        for phi in range(len(BinXY[0])):
-            X.append(BinXY[eta][phi][0][0])
-            Y.append(BinXY[eta][phi][1][0])
-            if energies[eta][phi] != 100000:
-                weights.append(energies[eta][phi])
-                #weights.append(np.log(energies[eta][phi]+1))
-                if  np.log(energies[eta][phi]+1) > weightmax:
-                    weightmax = np.log(energies[eta][phi]+1)
-                    etamax = eta
-                    phimax = phi
-            else : 
-                weights.append(0)
-            pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
-            pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
-    if weightmax == 0: weightmax = 1
-    sc = plt.scatter(pointXY[0],pointXY[1],c=np.array(weights), vmin=0)
-    plt.colorbar(sc)
-    res = 0 
-    #colors = cm.get_cmap("viridis", 8)
-    colors = white_viridis
-    for eta in range(len(BinXY)):
-        for phi in range(len(BinXY[0])):
-            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res]+1)/np.log(max(weightmax,5))))
-            res +=1
-            #if energies[eta][phi] != 100000:
-                #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
-    energy_cluster = energycluster(energies,etamax,phimax)
+    for bin_index in range(len(bins)):
+        eta = bins[bin_index]["S2_coordinates"]['eta_index']
+        phi = bins[bin_index]["S2_coordinates"]['phi_index']
+        S2_Sector = bins[bin_index]["S2_coordinates"]["Sector"]
+        bin_geometry = pointtopolygon([bins[bin_index]['verticesX'],bins[bin_index]['verticesY']])
+        if S2_Sector == 0 :
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S0_TTs[eta][phi]+1)))
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S0_TTs[eta][phi]))
+            #plt.fill(*bin_geometry.exterior.xy, color='red')
+        if S2_Sector == 1 :
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S1_TTs[eta][phi]+1)))
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S1_TTs[eta][phi]))
+
+            #plt.fill(*bin_geometry.exterior.xy, color='green')
+        if S2_Sector == 2 :
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S2_TTs[eta][phi]+1)))
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S2_TTs[eta][phi]))
+
+            #plt.fill(*bin_geometry.exterior.xy, color='blue')
+     
+        plt.plot(*bin_geometry.exterior.xy, color='black', linewidth=0.5)
+
+    sect,etamax,phimax = np.unravel_index(np.array([S0_TTs,S1_TTs,S2_TTs]).argmax(), np.array([S0_TTs,S1_TTs,S2_TTs]).shape)
+    energy_cluster = energycluster(np.array([S0_TTs,S1_TTs,S2_TTs])[sect],etamax,phimax)
+
     if event:
         x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
         if (event.phi_gen < np.pi) and (event.phi_gen > 0):
@@ -80,40 +137,28 @@ def createplot(args,event,energies,BinXY,title):
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         pt_gen  = str(round(event.pT_gen))
         plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
+        if args.Edges == 'yes': Edges = 'Edges'
+        if args.Edges == 'no': Edges = 'No_Edges'
+        #plt.savefig('Results/plot_TTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
+
     else:
         plt.title('pt_cluster ='+str(round(energy_cluster)))
-    if args.Edges == 'yes': Edges = 'Edges'
-    if args.Edges == 'no': Edges = 'No_Edges'
-    if args.read_EMP == "no":
-        plt.savefig('Results/plot_pTTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'.png')
-    if args.read_EMP == "yes":
-        plt.show()
+        #plt.savefig('Results/plot_TTs/from_EMP/wholeendcap'+title+'.png')
+
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.04)
+    plt.colorbar(colorbar,cax = cax )
+    plt.show()
 
 
-def create_bins(args):
-    Edges = args.Edges
-    if Edges == 'yes': 
-        nb_phi = 28 + 9
-        phimin =-15 * np.pi/180
-    else : 
-        nb_phi = 24 + 6
-        phimin =  0 * np.pi/180
-    nb_phi = 36
-    phimin =  0 * np.pi/180
-    etamin = 1.305
-    L = [[[]for phi in range(nb_phi)]for eta in range(20)]
-    BinsXY =[[[]for phi in range(nb_phi)]for eta in range(20)] 
-    for eta in range(20):
-        for phi in range(nb_phi):
-            vertices = np.array([[eta * np.pi/36 + etamin,(eta+1) * np.pi/36 + etamin,
-                    (eta+1) * np.pi/36 + etamin,eta * np.pi/36 + etamin],
-                   [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
-                    (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
-            verticesXY = etaphitoXY(vertices[0],vertices[1],1)
-            BinsXY[eta][phi].append(verticesXY[0].tolist()+[verticesXY[0][0]])
-            BinsXY[eta][phi].append(verticesXY[1].tolist()+[verticesXY[1][0]])
-    return BinsXY
-            
+
+
+def pointtopolygon(vertices):
+    points = []
+    for i in range(len(vertices[0])):
+        if vertices[0][i]!= 0 or vertices[1][i] != 0:
+            points.append((vertices[0][i],vertices[1][i]))
+    return(Polygon(points))
 
     
 def etaphitoXY(eta,phi,z):

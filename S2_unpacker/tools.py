@@ -38,3 +38,16 @@ def unpack5E3M_ToInt(num): #Take 5E3M format and unpackpack it into integer
 
 def unpackFloat_FromInt(energy):
     return float((energy-0.5)/(2**12))
+
+
+
+def S1_phi_to_S2_phi(args,phi,sameS1S2sector):
+
+    if args.Edges == 'yes': offset = 3
+    if args.Edges == 'no' : offset = 0
+ 
+    if sameS1S2sector == 'yes':
+        return(phi - 6 - offset)
+
+    if sameS1S2sector == 'no':
+        return(phi +18-offset)

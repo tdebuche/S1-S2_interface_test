@@ -20,10 +20,7 @@ def create_pTTs(event,args,Sector):
         nb_selected_TCs = get()
         pTTs_CEE = add_TCs(pTTs_CEE,event.ds_si,nb_selected_TCs, Sector,'CEE')
         #pTTs_CEH = add_TCs(pTTs_CEH,event.ds_si,nb_selected_TCs, Sector,'CEH')
-    if Sector == args.Sector:
-        event.ds_pTTsCEE = pTTs_CEE
-        event.ds_pTTsCEH = pTTs_CEH
-    if Sector != args.Sector:
-        event.ds_pTTsdupCEE = pTTs_CEE
-        event.ds_pTTsdupCEH = pTTs_CEH
+
+    event.ds_pTTs['CEE']['Sector'+str(Sector)] = pTTs_CEE
+    event.ds_pTTs['CEH']['Sector'+str(Sector)] = pTTs_CEH
         
