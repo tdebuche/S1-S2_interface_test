@@ -13,7 +13,6 @@ from S1_packer.TC_packer import _TC_packer
 from S1_packer.pTT_packer import _pTT_packer
 from S1_packer.create_EMP import createEMPfile
 from S2_unpacker.plot_TTs import record_plot
-from S2_unpacker.plot_TTs import plot_EMPfile
 
 parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 
@@ -44,30 +43,29 @@ args = parser.parse_args()
 
 #plot EMP
 if args.read_EMP == "yes":
-  args.n = 0 
-  plot_EMPfile(args,"Results/EMPfiles/EMP_S2_board_0.txt")
+  record_plot(None,args,"")
+else :
+  events = provide_events(args,args.n, args.particles, args.pileup)
 
-events = provide_events(args,args.n, args.particles, args.pileup)
-
-#TS are created automatically
+  #TS are created automatically
 
 
-for idx, event in enumerate(events):
+  for idx, event in enumerate(events):
   
-  #create pTTs
-  create_pTTs(event,args,0)
-  create_pTTs(event,args,1)
-  create_pTTs(event,args,2)
+    #create pTTs
+    create_pTTs(event,args,0)
+    create_pTTs(event,args,1)
+    create_pTTs(event,args,2)
 
-  #packing
-  _TC_packer(event,args)
-  _pTT_packer(event,args)
+    #packing
+    _TC_packer(event,args)
+    _pTT_packer(event,args)
   
-  #createEMPfile
-  createEMPfile(event)
+    #createEMPfile
+    createEMPfile(event)
   
-  #unpack and plot
-  record_plot(event,args,'pTT_event'+str(idx))
+    #unpack and plot
+    record_plot(event,args,'pTT_event'+str(idx))
 
 
     
