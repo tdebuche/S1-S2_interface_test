@@ -113,12 +113,16 @@ def provide_events(args,n, particles, PU):
     branches_ts = ['good_ts_layer', 'good_ts_z','good_ts_waferu', 'good_ts_waferv','good_ts_energy']
 
     branches_gen = ['event', 'good_genpart_exeta', 'good_genpart_exphi', 'good_genpart_energy']
-
-    root = uproot.open("/eos/user/t/tsculac/BigStuff/HGCAL/V16_data_ntuples_15June2024/SinglePhotonPU0V16.root")
-    tree = root.get("l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple")
+    if args.rootfile == 'from_Toni':
+        root = uproot.open("/eos/user/t/tsculac/BigStuff/HGCAL/V16_data_ntuples_15June2024/SinglePhotonPU0V16.root")
+        tree = root.get("l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple")
+        first_event = 49
+    if args.rootfile == 'from_Marco':
+        tree = uproot.open(filepath)[name_tree]
+        first_event = 0
     events_ds = []
-    printProgressBar(49,49+ n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
-    for ev in range(49,49+n):
+    printProgressBar(0,n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
+    for ev in range(first_event,first_event+n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
       data_gen = tree.arrays(branches_gen, entry_start=ev, entry_stop=ev+1, library='ak')[0]
       data_ts = tree.arrays(branches_ts, entry_start=ev, entry_stop=ev+1, library='ak')[0]

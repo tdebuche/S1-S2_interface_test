@@ -19,7 +19,9 @@ parser = argparse.ArgumentParser(description='S1-S2_interface_test Parameters')
 #version to test
 parser.add_argument('--pTT_version', default='v3', help='pTT version to test')
 
+
 #event type
+parser.add_argument('--rootfile', default='from_Marco', help='from_Marco or from_Toni, if from_Toni it takes the event 49')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
 parser.add_argument('--particles', type=str, default='photons', help='Choose the particle sample')
 parser.add_argument('--pileup',    type=str, default='PU0',     help='Choose the pileup - PU0 or PU200')
