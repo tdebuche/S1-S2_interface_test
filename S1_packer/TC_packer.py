@@ -3,6 +3,7 @@ import numpy as np
 import awkward as ak
 import math
 from data_handle.tools import getuvsector,get_module_id,get_MB_id,compress_value
+from S1_packer.tools import *
 from S1_packer.read_files import read_xml,MB_geometry
 
 
@@ -14,18 +15,21 @@ def _process_module(event, ds_TCs, idx, xml_alloc, data_TCs):
     # simulating the BC algorithm (ECON-T) and the phi sorting in the S1 FPGA
     mod_phi = ds_TCs.good_tc_phi[idx][:n_TCs+1]
     mod_energy = ds_TCs.good_tc_pt[idx][:n_TCs+1][ak.argsort(mod_phi)]
+    mod_u = ds_TCs.good_tc_cellu[idx][:n_TCs+1][ak.argsort(mod_phi)]
+    mod_v = ds_TCs.good_tc_cellv[idx][:n_TCs+1][ak.argsort(mod_phi)]
     mod_r_over_z = ds_TCs.r_over_z[idx][:n_TCs+1][ak.argsort(mod_phi)]
     mod_phi = ak.sort(mod_phi)
-    
+
     # assigning each TCs to a columns
     xml_alloc = sorted(xml_alloc, key=lambda x: x['column'])  
     for tc_idx, TC_xml in enumerate(xml_alloc):
         if tc_idx > len(mod_energy)-1: break
         n_link = TC_xml['n_link']
+        cell_u,cell_v = mod_u[tc_idx],mod_v[tc_idx]
         value_energy, code_energy = compress_value(mod_energy[tc_idx]/event.LSB)
         value_r_z = int(mod_r_over_z[tc_idx]/event.LSB_r_z) & 0xFFF # 12 bits
         value_phi = int((mod_phi[tc_idx]-event.offset_phi)/event.LSB_phi) & 0xFFF # 12 bits
-        data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ code_energy, value_r_z, value_phi]
+        data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ code_energy, get_TC_numbering(cell_u,cell_v),value_r_z, value_phi]
  
 def _process_TC_data(event, args,xml,xml_MB):
     data_TCs = defaultdict(list)
