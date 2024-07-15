@@ -12,6 +12,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 
+
+
 def record_plot(event,args,title):
 
     if args.whole_endcap == 'no': #choose one sector or the whole endcap 
@@ -23,7 +25,7 @@ def record_plot(event,args,title):
 
         #create one plot for the CEE one for the CEH
         createplot_single_sector(args,event,CEE_TTs,title+'CEE')
-        #createplot_single_sector(args,event,CEH_TTs,title+'CEH')
+        createplot_single_sector(args,event,CEH_TTs,title+'CEH')
 
 
     if args.whole_endcap == 'yes':
@@ -40,7 +42,7 @@ def record_plot(event,args,title):
         
         #create one plot for the CEE one for the CEH
         createplot_whole_endcap(args,event, S0_CEE_TTs, S1_CEE_TTs, S2_CEE_TTs,title+'CEE')
-        #createplot_whole_endcap(args,event, S0_CEE_TTs, S1_CEH_TTs, S2_CEH_TTs,title+'CEH')
+        createplot_whole_endcap(args,event, S0_CEH_TTs, S1_CEH_TTs, S2_CEH_TTs,title+'CEH')
 
 
 
@@ -85,7 +87,7 @@ def createplot_single_sector(args,event,TTs,title):
 
     #little function to find the energy maximum and return the energy sum on neighbour bins
     etamax,phimax = np.unravel_index(np.array(TTs).argmax(), np.array(TTs).shape)
-    energy_cluster = energycluster(TTs,etamax,phimax)
+    pt_cluster = ptcluster(TTs,etamax,phimax)
 
     if event: #basically it runs if the energies come from python links (so we can search in the rootfile the gen particle)
         x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
@@ -93,9 +95,10 @@ def createplot_single_sector(args,event,TTs,title):
         eta_gen = str(round(event.eta_gen))
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         energy_gen  = str(round(event.energy_gen))
-        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',energy=' + energy_gen +',energy_cluster ='+str(round(energy_cluster)))
+        pt_gen  = str(round(event.pT_gen))
+        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
     else:
-        plt.title('pt_cluster ='+str(round(energy_cluster)))
+        plt.title('pt_cluster ='+str(round(pt_cluster)))
 
     #add the colorbar
     divider = make_axes_locatable(ax)
@@ -132,23 +135,23 @@ def createplot_whole_endcap(args,event,S0_TTs, S1_TTs, S2_TTs,title):
     for bin_index in range(len(bins)):
         eta = bins[bin_index]["S2_coordinates"]['eta_index']
         phi = bins[bin_index]["S2_coordinates"]['phi_index']
-        S2_Sector = bins[bin_index]["S2_coordinates"]["Sector"]
+        S1_Sector = bins[bin_index]["S1_Sectors"][0]
         bin_geometry = pointtopolygon([bins[bin_index]['verticesX'],bins[bin_index]['verticesY']])
         plt.plot(*bin_geometry.exterior.xy, color='black', linewidth=0.5)
 
         #plot sectors 
-        if S2_Sector == 0 :
+        if S1_Sector == 0 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S0_TTs[eta][phi]+1)))#logarithm scale
-            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S0_TTs[eta][phi]))
-            #plt.fill(*bin_geometry.exterior.xy, color='red') #if youn want to show the S2_Sector
-        if S2_Sector == 1 :
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S0_TTs[eta][phi]))
+            plt.fill(*bin_geometry.exterior.xy, color='red') #if youn want to show the S2_Sector
+        if S1_Sector == 1 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S1_TTs[eta][phi]+1))) #logarithm scale
-            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S1_TTs[eta][phi]))
-            #plt.fill(*bin_geometry.exterior.xy, color='green') #if youn want to show the S2_Sector
-        if S2_Sector == 2 :
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S1_TTs[eta][phi]))
+            plt.fill(*bin_geometry.exterior.xy, color='green') #if youn want to show the S2_Sector
+        if S1_Sector == 2 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S2_TTs[eta][phi]+1)))#logarithm scale
-            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S2_TTs[eta][phi]))
-            #plt.fill(*bin_geometry.exterior.xy, color='blue') #if youn want to show the S2_Sector
+            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S2_TTs[eta][phi]))
+            plt.fill(*bin_geometry.exterior.xy, color='blue') #if youn want to show the S2_Sector
  
         # if you want to show the phi coordinates
         x,y = np.sum(np.array(bins[bin_index]['verticesX']))/4,np.sum(np.array(bins[bin_index]['verticesY']))/4
@@ -159,22 +162,22 @@ def createplot_whole_endcap(args,event,S0_TTs, S1_TTs, S2_TTs,title):
 
     #little function to find the energy maximum and return the energy sum on neighbour bins
     sect,etamax,phimax = np.unravel_index(np.array([S0_TTs,S1_TTs,S2_TTs]).argmax(), np.array([S0_TTs,S1_TTs,S2_TTs]).shape)
-    energy_cluster = energycluster(np.array([S0_TTs,S1_TTs,S2_TTs])[sect],etamax,phimax)
+    pt_cluster = ptcluster(np.array([S0_TTs,S1_TTs,S2_TTs])[sect],etamax,phimax)
 
     if event: #basically it runs if the energies come from python links (so we can search in the rootfile the gen particle)
         x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
-        if (event.phi_gen < np.pi) and (event.phi_gen > 0):
-            plt.scatter(x,y,c = 'red', marker = 'x')
+        plt.scatter(x,y,c = 'red', marker = 'x')
         eta_gen = str(round(event.eta_gen))
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         energy_gen  = str(round(event.energy_gen))
-        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',energy=' + energy_gen +',energy_cluster ='+str(round(energy_cluster)))
+        pt_gen  = str(round(event.pT_gen))
+        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
     else:
-        plt.title('pt_cluster ='+str(round(energy_cluster)))
+        plt.title('pt_cluster ='+str(round(pt_cluster)))
 
-    #divider = make_axes_locatable(ax)
-    #cax = divider.append_axes("right", size="5%", pad=0.04)
-    #plt.colorbar(colorbar,cax = cax )
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.04)
+    plt.colorbar(colorbar,cax = cax )
     plt.show()
 
     if event:
@@ -201,7 +204,7 @@ def etaphitoXY(eta,phi,z): #to plot gen particle
 
 
 
-def energycluster(energies,etamax,phimax): #to have an idea of the energy of the particle 
+def ptcluster(energies,etamax,phimax): #to have an idea of the energy of the particle 
     energy = 0
     for i in range(-2,3):
         for j in range(-2,3):

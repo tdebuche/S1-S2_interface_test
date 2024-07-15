@@ -18,7 +18,7 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
                     if CEECEH == 'CEE': a = 0
                     if CEECEH == 'CEH': a = 1
                     pTT = get_pTT_id(Sector, S1Board_idx, a, eta,phi)
-                    energytoadd[pTT].append(TCs.good_tc_pt[module_idx][idx])
+                    energytoadd[pTT].append(TCs.good_tc_energy[module_idx][idx])
     for pTT_idx in range(len(pTTs)):
         pTT = pTTs[pTT_idx]['pTT_id']
         for TC_idx in range(len( energytoadd[pTT])):

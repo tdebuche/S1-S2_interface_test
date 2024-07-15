@@ -7,14 +7,15 @@ import yaml
 from data_handle.tools import compress_value, printProgressBar, getuvsector,get_module_id
 from ECONT.Trigger_Sums import provide_ts, provide_unselected_ts,provide_STCs
 from collections import defaultdict
+import packingHelper as pkg
 
 class EventData():
     def __init__(self,args, ds_si, ds_sci, gen,ts):
         self.args  = args
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
-        #self.ds_ts = provide_ts(self)
-        self.ds_ts = ts
+        self.ds_ts = provide_ts(self)
+        #self.ds_ts = ts
         self.ds_unselected_ts = provide_unselected_ts(self)
         self.ds_stc = provide_STCs(args,self)
         self.ds_pTTs = {'CEE':{'Sector0':[],'Sector1':[],'Sector2':[]},'CEH':{'Sector0':[],'Sector1':[],'Sector2':[]}}
@@ -24,7 +25,9 @@ class EventData():
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
         self.phi_gen = gen.good_genpart_exphi[0]
-        self.energy_gen = gen.good_genpart_energy[0]       
+        self.energy_gen = gen.good_genpart_energy[0]
+        self.pT_gen  = self._compute_pt(self.eta_gen,
+                             gen.good_genpart_energy[0])       
         self.LSB = 1/10000 # 100 keV
         self.LSB_r_z = 0.7/4096
         self.LSB_phi = np.pi/1944
@@ -33,8 +36,6 @@ class EventData():
     def _compute_pt(self, eta, energy):
         return energy/np.cosh(eta)
 
-with open('config.yaml', "r") as afile:
-    cfg_particles = yaml.safe_load(afile)["particles"]
 
 def apply_sort(df, counts, axis):
     for field in df.fields:
@@ -42,8 +43,11 @@ def apply_sort(df, counts, axis):
     return df
     
 def provide_event(args,ev, gen,ts):
+    #gen = gen[gen['good_genpart_exeta']>0]
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
     ev['MB_v'] = np.floor((ev.good_tc_cellv-1)/4)
+    ev = ev[ev['good_tc_z'] >0]
+
     #ev = ev[[x for x in ak.fields(ev) if not x in ["good_tc_x","good_tc_y","good_tc_z"]]]
     
     # dividing silicon and scintillators
@@ -100,31 +104,60 @@ def provide_event(args,ev, gen,ts):
 
 
 def provide_events(args,n, particles, PU):
-    base_path = cfg_particles['base_path']
-    name_tree = cfg_particles[PU][particles]["tree"]
-    filepath  = base_path + cfg_particles[PU][particles]["file"]
+    base_path = '/eos/user/m/mmanoni/HGCAL_V16/V16_data_ntuples_15June2024/'
+    #base_path = '/eos/home-m/mchiusi/s2_emulator/'
 
+    if args.pileup == 'PU0':
+        if args.particles == 'photons':
+            #file = "SinglePhoton_Pt-2To200_Fall22_MiniAOD-noPU_24-05-02_emulator_realbcstc_v2-v1.root"
+            file = "SinglePhotonPU0V16.root"
+
+        if args.particles == 'pions':
+            file = "SinglePionPU0V16.root"
+    if args.pileup == 'PU200':
+        if args.particles == 'photons':
+            file = "DoublePhotonPU200V16.root"
+            #file = "DoublePhoton_FlatPt-1To100_PU200_Phase2Fall22DRMiniAOD_24-05-02_emulator_realbcstc_v2-v1.root"
+        if args.particles == 'pions':
+            file = "SinglePionPU200V16.root"
+    filepath  = base_path + file 
     branches_tc = [
         'good_tc_x', 'good_tc_y', 'good_tc_z',
         'good_tc_phi', 'good_tc_layer', 'good_tc_cellu','good_tc_cellv',
         'good_tc_waferu', 'good_tc_waferv',
-        'good_tc_pt', 'good_tc_subdet'
+        'good_tc_pt', 'good_tc_subdet','good_tc_energy'
     ]
     branches_ts = ['good_ts_layer', 'good_ts_z','good_ts_waferu', 'good_ts_waferv','good_ts_energy']
 
-    branches_gen = ['event', 'good_genpart_exeta', 'good_genpart_exphi', 'good_genpart_energy']
+    branches_gen = ['event', 'good_genpart_exeta', 'good_genpart_exphi', 'good_genpart_energy','event']
     if args.rootfile == 'from_Toni':
         root = uproot.open("/eos/user/t/tsculac/BigStuff/HGCAL/V16_data_ntuples_15June2024/SinglePhotonPU0V16.root")
         tree = root.get("l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple")
         first_event = 49
     if args.rootfile == 'from_Marco':
-        tree = uproot.open(filepath)[name_tree]
+        tree = uproot.open(filepath)["l1tHGCalTriggerNtuplizer/HGCalTriggerNtuple"]
         first_event = 0
     events_ds = []
     printProgressBar(0,n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
+
+    #print(tree)
+    #print(len(tree))
+    #event_number = 1
+    #branches = tree
+    #print(tree.arrays(branches_gen)["event"])
+
+    #event_index = pkg.get_index(branches["event"],event_number )[0]
+    #first_event = event_index
+
     for ev in range(first_event,first_event+n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
+      print(len(tree.arrays(branches_gen, entry_start=ev, entry_stop=ev+1, library='ak')))
       data_gen = tree.arrays(branches_gen, entry_start=ev, entry_stop=ev+1, library='ak')[0]
+      print('event_number = '+str(data_gen['event']))
+      print('eta = ' +str(data_gen['good_genpart_exeta']))
+      print('phi = ' +str(data_gen['good_genpart_exphi']))
+      print('energy = ' +str(data_gen['good_genpart_energy']))
+      print('pT = ' +str(data_gen['good_genpart_energy']/np.cosh(np.abs(data_gen['good_genpart_exeta']))))
       data_ts = tree.arrays(branches_ts, entry_start=ev, entry_stop=ev+1, library='ak')[0]
       events_ds.append(provide_event(args,data, data_gen,data_ts))
       printProgressBar(ev+1, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
