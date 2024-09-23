@@ -7,15 +7,15 @@ import yaml
 from data_handle.tools import compress_value, printProgressBar, getuvsector,get_module_id
 from ECONT.Trigger_Sums import provide_ts, provide_unselected_ts,provide_STCs
 from collections import defaultdict
-import packingHelper as pkg
+
 
 class EventData():
     def __init__(self,args, ds_si, ds_sci, gen,ts):
         self.args  = args
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
-        self.ds_ts = provide_ts(self)
-        #self.ds_ts = ts
+        #self.ds_ts = provide_ts(self)
+        self.ds_ts = ts
         self.ds_unselected_ts = provide_unselected_ts(self)
         self.ds_stc = provide_STCs(args,self)
         self.ds_pTTs = {'CEE':{'Sector0':[],'Sector1':[],'Sector2':[]},'CEH':{'Sector0':[],'Sector1':[],'Sector2':[]}}
@@ -55,7 +55,7 @@ def provide_event(args,ev, gen,ts):
     si  = ev[ev['good_tc_subdet'] != 10]
     
     # selecting first 120 sector only
-    sci = sci[sci['good_tc_cellv']<=48]
+    #sci = sci[sci['good_tc_cellv']<=48]
     #si = si[si['good_tc_layer'] < 27]
 
     # sorting by modules  
@@ -88,15 +88,13 @@ def provide_event(args,ev, gen,ts):
 
     # sorting by transverse energy, simulating the ECONT_T
     sorted_sci = sorted_sci[ak.argsort(sorted_sci['good_tc_pt'], ascending=False)][0]
-
-
-
+    
     list_ts = defaultdict(list)
     ts   = ts[ts['good_ts_z'] >0]
     for module_index in range(len(ts['good_ts_layer'])):
         u,v,sector = getuvsector(ts['good_ts_layer'][module_index],ts['good_ts_waferu'][module_index],ts['good_ts_waferv'][module_index])
         module_id = get_module_id(sector,ts['good_ts_layer'][module_index],u,v)
-        list_ts[module_id].append(ts['good_ts_energy'][module_index])
+        list_ts[module_id].append(ts['good_ts_pt'][module_index])
 
 
     return EventData(args,sorted_si, sorted_sci,gen,list_ts)
@@ -127,7 +125,7 @@ def provide_events(args,n, particles, PU):
         'good_tc_waferu', 'good_tc_waferv',
         'good_tc_pt', 'good_tc_subdet','good_tc_energy'
     ]
-    branches_ts = ['good_ts_layer', 'good_ts_z','good_ts_waferu', 'good_ts_waferv','good_ts_energy']
+    branches_ts = ['good_ts_layer', 'good_ts_z','good_ts_waferu', 'good_ts_waferv','good_ts_pt']
 
     branches_gen = ['event', 'good_genpart_exeta', 'good_genpart_exphi', 'good_genpart_energy','event']
     if args.rootfile == 'from_Toni':
@@ -140,14 +138,6 @@ def provide_events(args,n, particles, PU):
     events_ds = []
     printProgressBar(0,n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
 
-    #print(tree)
-    #print(len(tree))
-    #event_number = 1
-    #branches = tree
-    #print(tree.arrays(branches_gen)["event"])
-
-    #event_index = pkg.get_index(branches["event"],event_number )[0]
-    #first_event = event_index
 
     for ev in range(first_event,first_event+n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
@@ -160,6 +150,7 @@ def provide_events(args,n, particles, PU):
       print('pT = ' +str(data_gen['good_genpart_energy']/np.cosh(np.abs(data_gen['good_genpart_exeta']))))
       data_ts = tree.arrays(branches_ts, entry_start=ev, entry_stop=ev+1, library='ak')[0]
       events_ds.append(provide_event(args,data, data_gen,data_ts))
+      #print(provide_event(args,data, data_gen,data_ts))
       printProgressBar(ev+1, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     return events_ds
          

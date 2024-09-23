@@ -1,4 +1,12 @@
 import yaml
+import numpy as np
+
+
+
+def etaphitoXY(eta,phi,z):
+    x = z * np.tan(2*np.arctan(np.exp(-eta))) * np.cos(phi)
+    y = z * np.tan(2*np.arctan(np.exp(-eta))) * np.sin(phi)
+    return(x,y)
 
 
 def get_pTT_id(Sector, S1Board, CEECEH, eta,phi):

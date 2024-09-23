@@ -74,17 +74,6 @@ def createplot_single_sector(args,event,TTs,title):
         if S2_Sector == args.Sector :
             plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(TTs[eta][phi]))
 
-        #if you want to see which sector it is (no event)
-        colors = ['red','green','blue']
-        S1_Sectors = bins[bin_index]['S1_Sectors']
-        bin_geometry = pointtopolygon([bins[bin_index]['verticesX'],bins[bin_index]['verticesY']])
-        if args.Sector in S1_Sectors :
-            #plt.fill(*bin_geometry.exterior.xy, color=colors[args.Sector])
-            if eta == 0 :
-                phi = bins[bin_index]["S1_Sector"+str(args.Sector)]['phi_index']
-                x,y = np.sum(np.array(bins[bin_index]['verticesX']))/4,np.sum(np.array(bins[bin_index]['verticesY']))/4
-                #plt.annotate(phi,(x,y))
-
     #little function to find the energy maximum and return the energy sum on neighbour bins
     etamax,phimax = np.unravel_index(np.array(TTs).argmax(), np.array(TTs).shape)
     pt_cluster = ptcluster(TTs,etamax,phimax)
@@ -96,7 +85,7 @@ def createplot_single_sector(args,event,TTs,title):
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         energy_gen  = str(round(event.energy_gen))
         pt_gen  = str(round(event.pT_gen))
-        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
+        plt.title('Gen event nb '+str(event.event)+' : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
     else:
         plt.title('pt_cluster ='+str(round(pt_cluster)))
 
@@ -104,7 +93,7 @@ def createplot_single_sector(args,event,TTs,title):
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="5%", pad=0.04)
     plt.colorbar(colorbar,cax = cax )
-    plt.show()
+    #plt.show()
 
     #record
     if event:
@@ -135,23 +124,24 @@ def createplot_whole_endcap(args,event,S0_TTs, S1_TTs, S2_TTs,title):
     for bin_index in range(len(bins)):
         eta = bins[bin_index]["S2_coordinates"]['eta_index']
         phi = bins[bin_index]["S2_coordinates"]['phi_index']
-        S1_Sector = bins[bin_index]["S1_Sectors"][0]
+        #S1_Sector = bins[bin_index]["S1_Sectors"][0]
+        S2_Sector = bins[bin_index]["S2_coordinates"]['Sector']
         bin_geometry = pointtopolygon([bins[bin_index]['verticesX'],bins[bin_index]['verticesY']])
         plt.plot(*bin_geometry.exterior.xy, color='black', linewidth=0.5)
 
         #plot sectors 
-        if S1_Sector == 0 :
+        if S2_Sector == 0 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S0_TTs[eta][phi]+1)))#logarithm scale
-            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S0_TTs[eta][phi]))
-            plt.fill(*bin_geometry.exterior.xy, color='red') #if youn want to show the S2_Sector
-        if S1_Sector == 1 :
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S0_TTs[eta][phi]))
+            #plt.fill(*bin_geometry.exterior.xy, color='red') #if youn want to show the S2_Sector
+        if S2_Sector == 1 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S1_TTs[eta][phi]+1))) #logarithm scale
-            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S1_TTs[eta][phi]))
-            plt.fill(*bin_geometry.exterior.xy, color='green') #if youn want to show the S2_Sector
-        if S1_Sector == 2 :
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S1_TTs[eta][phi]))
+            #plt.fill(*bin_geometry.exterior.xy, color='green') #if youn want to show the S2_Sector
+        if S2_Sector == 2 :
             #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(np.log(S2_TTs[eta][phi]+1)))#logarithm scale
-            #plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S2_TTs[eta][phi]))
-            plt.fill(*bin_geometry.exterior.xy, color='blue') #if youn want to show the S2_Sector
+            plt.fill(*bin_geometry.exterior.xy, color=colorbar.to_rgba(S2_TTs[eta][phi]))
+            #plt.fill(*bin_geometry.exterior.xy, color='blue') #if youn want to show the S2_Sector
  
         # if you want to show the phi coordinates
         x,y = np.sum(np.array(bins[bin_index]['verticesX']))/4,np.sum(np.array(bins[bin_index]['verticesY']))/4
@@ -171,23 +161,27 @@ def createplot_whole_endcap(args,event,S0_TTs, S1_TTs, S2_TTs,title):
         phi_gen = str(round(event.phi_gen/np.pi * 180))
         energy_gen  = str(round(event.energy_gen))
         pt_gen  = str(round(event.pT_gen))
-        plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
+        plt.title('Gen particule nb '+str(event.event)+' : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt_gen=' + pt_gen +',pt_cluster ='+str(round(pt_cluster)))
     else:
         plt.title('pt_cluster ='+str(round(pt_cluster)))
 
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="5%", pad=0.04)
-    plt.colorbar(colorbar,cax = cax )
-    plt.show()
+    cbar=plt.colorbar(colorbar,cax = cax )
+    cbar.set_label('pT (GeV)')
+
 
     if event:
         if args.Edges == 'yes': Edges = 'Edges'
         if args.Edges == 'no': Edges = 'No_Edges'
         plt.savefig('Results/plot_TTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'_whole_endcap.png')
+        print("save " +'Results/plot_TTs/'+args.pTT_version+'/'+Edges+'/'+args.particles+'/'+args.pileup+'/'+title +'_whole_endcap.png')
     else:
         plt.savefig('Results/plot_TTs/from_EMP/'+title+'_whole_endcap.png')
+        print('Results/plot_TTs/from_EMP/'+title+'_whole_endcap.png')
 
-
+    #plt.show()
+    print('TTs sum = ' + str(np.sum(np.array([S0_TTs,S1_TTs,S2_TTs]))))
 
 def pointtopolygon(vertices):#convert vertex list to shapely ploygon
     points = []
