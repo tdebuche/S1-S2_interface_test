@@ -9,5 +9,4 @@ This repository is splitted in few parts, which follow each step of the pTT chai
 - S1_packer : pack TCs and pTTs in the links
 - S2_unpacker : unpack pTTs and TCs in the links, then compute and plot the Trigger Towers 
 - data_handle : create the event class and read the rootfile with events
-
-Results of simulations are stored in Results
+- Results : store the results of simulations
