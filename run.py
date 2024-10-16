@@ -29,12 +29,9 @@ parser.add_argument('--pileup',    type=str, default='PU0',     help='Choose the
 
 #On scenarios 
 parser.add_argument('--Scenario', type=str, default='TS', help='Choose TS or unselected_TS')
+parser.add_argument('--whole_endcap',   default = 'yes', help='whole endcap = yes, one sector = no')
 parser.add_argument('--Sector',      type=int, default=0, help='Sector of S2 Board')
 parser.add_argument('--Edges',   default = 'yes', help='20*24 or 20*28 bins')
-
-#whole endcap
-
-parser.add_argument('--whole_endcap',   default = 'yes', help='whole endcap = yes, one sector = no')
 
 #plot from EMP
 parser.add_argument('--read_EMP',   default = 'no', help='plot with EMPfile')
