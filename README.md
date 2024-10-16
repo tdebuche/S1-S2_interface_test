@@ -1,4 +1,4 @@
-#S1-S2_interface_test
+# S1-S2_interface_test
 
 This repository allows one to simulate the pTT building in the Stage 1, their mapping in the optical links and the Trigger Towers building in the Stage 2, from a rooftile with energy deposite simulated in CMSSW. This repository uses the mappings created in the HGCAL_TPG_pTT repository, and thus allows one to check if they work. 
 
